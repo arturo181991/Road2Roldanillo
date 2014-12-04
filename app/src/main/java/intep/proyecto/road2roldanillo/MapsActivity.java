@@ -234,6 +234,8 @@ public class MapsActivity extends FragmentActivity{
                     break;
                 case R.id.all:
                     showAll = item.isChecked();
+                    showHotels = showAll;
+                    showRestaurants = showAll;
                     menu.findItem(R.id.restaurant).setChecked(showAll);
                     menu.findItem(R.id.hotel).setChecked(showAll);
                     if(showAll){
