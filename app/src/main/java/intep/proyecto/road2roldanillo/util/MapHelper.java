@@ -14,20 +14,20 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import intep.proyecto.road2roldanillo.R;
-import intep.proyecto.road2roldanillo.entidades.Sitio;
+import intep.proyecto.road2roldanillo.entidades.Site;
 
 /**
  * Created by gurzaf on 12/3/14.
  */
 public class MapHelper {
 
-    public static Map<Marker,Sitio> inicializarSitios(GoogleMap map, List<Sitio> sitios, int resource){
+    public static Map<Marker,Site> inicializarSites(GoogleMap map, List<Site> Sites, int resource){
         BitmapDescriptor bt = BitmapDescriptorFactory.fromResource(resource);
 
 
-        Map<Marker,Sitio> mapa = new HashMap<Marker, Sitio>();
+        Map<Marker,Site> mapa = new HashMap<Marker, Site>();
 
-        for (Sitio restaurante : sitios) {
+        for (Site restaurante : Sites) {
             MarkerOptions markerOption = new MarkerOptions().title(restaurante.getNombres()).
                     icon(bt)
                     .position(new LatLng(restaurante.getLatitud(), restaurante.getLongitud()))

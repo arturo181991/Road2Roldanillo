@@ -3,13 +3,13 @@ package intep.proyecto.road2roldanillo.entidades;
 /**
  * Created by gurzaf on 12/3/14.
  */
-public class Sitio {
+public class Site {
     private String nombres;
     private String detalle;
     private Double latitud;
     private Double longitud;
 
-    public Sitio(String nombres, String detalle, Double latitud, Double longitud) {
+    public Site(String nombres, String detalle, Double latitud, Double longitud) {
         this.nombres = nombres;
         this.detalle = detalle;
         this.latitud = latitud;

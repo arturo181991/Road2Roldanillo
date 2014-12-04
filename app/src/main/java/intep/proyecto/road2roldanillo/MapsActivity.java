@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import intep.proyecto.road2roldanillo.entidades.Sitio;
+import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.util.DataHelper;
 import intep.proyecto.road2roldanillo.util.MapHelper;
 
@@ -49,8 +49,8 @@ public class MapsActivity extends FragmentActivity{
     private static final String KEY_HERE = "YOURHERE";
     private static final String KEY_HOTEL = "SHOWHOTELS";
 
-    private Map<Marker,Sitio> hoteles;
-    private Map<Marker,Sitio> restaurantes;
+    private Map<Marker,Site> hoteles;
+    private Map<Marker,Site> restaurantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,21 +144,21 @@ public class MapsActivity extends FragmentActivity{
                 @Override
                 public View getInfoContents(Marker marker) {
 
-                    Sitio sitio;
+                    Site Site;
 
                     if(restaurantes.containsKey(marker)){
-                        sitio = restaurantes.get(marker);
+                        Site = restaurantes.get(marker);
                     }else{
-                        sitio = hoteles.get(marker);
+                        Site = hoteles.get(marker);
                     }
 
                     View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
 
-                    TextView nombreSitio = (TextView) v.findViewById(R.id.title);
-                    nombreSitio.setText(sitio.getNombres());
+                    TextView nombreSite = (TextView) v.findViewById(R.id.title);
+                    nombreSite.setText(Site.getNombres());
 
-                    TextView detalleSitio = (TextView) v.findViewById(R.id.snippet);
-                    detalleSitio.setText(sitio.getDetalle());
+                    TextView detalleSite = (TextView) v.findViewById(R.id.snippet);
+                    detalleSite.setText(Site.getDetalle());
 
                     return v;
 
@@ -228,7 +228,7 @@ public class MapsActivity extends FragmentActivity{
         return true;
     }
 
-    private void ocultarMarcadores(Map<Marker,Sitio> marcadores){
+    private void ocultarMarcadores(Map<Marker,Site> marcadores){
         if (marcadores != null){
             for (Marker marker : marcadores.keySet()){
                 marker.remove();
@@ -240,14 +240,14 @@ public class MapsActivity extends FragmentActivity{
     private void mostrarRestaurantes(){
         Log.i(TAG,"Mostrando restaurantes");
         if (restaurantes == null){
-            restaurantes = MapHelper.inicializarSitios(mMap, DataHelper.getRestaurantes(),R.drawable.restaurant);
+            restaurantes = MapHelper.inicializarSites(mMap, DataHelper.getRestaurantes(),R.drawable.restaurant);
         }
     }
 
     private void mostrarHoteles(){
         Log.i(TAG,"Mostrando hoteles");
         if(hoteles == null){
-            hoteles = MapHelper.inicializarSitios(mMap,DataHelper.getHoteles(),R.drawable.hotel);
+            hoteles = MapHelper.inicializarSites(mMap,DataHelper.getHoteles(),R.drawable.hotel);
         }
     }
 
