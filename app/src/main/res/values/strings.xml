@@ -8,5 +8,6 @@
     <string name="my_location">Mi ubicación</string>
     <string name="button_go_ubication">Ir a la ubicación</string>
     <string name="button_review">Reseñas del sitio</string>
+    <color name="bg_color">#ffffff</color>
 </resources>
 

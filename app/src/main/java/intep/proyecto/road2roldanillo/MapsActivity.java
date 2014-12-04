@@ -29,6 +29,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import intep.proyecto.road2roldanillo.entidades.Sitio;
+import intep.proyecto.road2roldanillo.util.DataHelper;
+import intep.proyecto.road2roldanillo.util.MapHelper;
 
 
 public class MapsActivity extends FragmentActivity{
@@ -44,79 +49,34 @@ public class MapsActivity extends FragmentActivity{
     private static final String KEY_HERE = "YOURHERE";
     private static final String KEY_HOTEL = "SHOWHOTELS";
 
-    private List<Marker> restaurantes;
-    private List<Marker> hoteles;
+    private Map<Marker,Sitio> hoteles;
+    private Map<Marker,Sitio> restaurantes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-        if (mMap != null) {
 
-            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            LayoutInflater inflater = null;
-            private TextView textViewTitle;
 
-            // Use default InfoWindow frame
-            @Override
-            public View getInfoWindow(Marker marker) {
-                View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-
-                LatLng latLng = marker.getPosition();// Getting the position from the marker
-                setContentView(R.layout.custom_info_contents);
-                Button botonIrAlSitio = (Button) findViewById(R.id.button_go_ubication);
-                Button botonResenias = (Button) findViewById(R.id.button_review);
-                botonIrAlSitio.setText("Como llegar aqui");
-                botonResenias.setText("Reseñas del sitio");
-                return v;
-            }
-
-            // Defines the contents of the InfoWindow
-            @Override
-            public View getInfoContents(Marker marker) {
-
-                /*View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-
-                LatLng latLng = marker.getPosition();// Getting the position from the marker
-                setContentView(R.layout.custom_info_contents);
-                Button botonIrAlSitio = (Button) findViewById(R.id.button_go_ubication);
-                Button botonResenias = (Button) findViewById(R.id.button_review);
-                botonIrAlSitio.setText("Como llegar aqui");
-                botonResenias.setText("Reseñas del sitio");
-                return v;*/
-                return null;
-            }
-        });
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                mMap.clear();
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-
-            }
-        });
-    }
     }
 
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
-        private View view;
-        public CustomInfoWindowAdapter(){
-            view = getLayoutInflater().inflate(R.layout.custom_info_contents,null);
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            return null;
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            return null;
-        }
-    }
+//    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
+//        private View view;
+//        public CustomInfoWindowAdapter(){
+//            view = getLayoutInflater().inflate(R.layout.custom_info_contents,null);
+//        }
+//
+//        @Override
+//        public View getInfoContents(Marker marker) {
+//            return null;
+//        }
+//
+//        @Override
+//        public View getInfoWindow(Marker marker) {
+//            return view;
+//        }
+//    }
 
     //Se debe reimplementar al menos los 4 metodos onCreate(), onResume(), **onPause()** y onDestroy() para que funcione
     @Override
@@ -174,6 +134,48 @@ public class MapsActivity extends FragmentActivity{
 
     private void setUpMap() {
 
+            mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                @Override
+                public View getInfoWindow(Marker marker) {
+                    return null;
+                }
+
+                @Override
+                public View getInfoContents(Marker marker) {
+
+                    Sitio sitio;
+
+                    if(restaurantes.containsKey(marker)){
+                        sitio = restaurantes.get(marker);
+                    }else{
+                        sitio = hoteles.get(marker);
+                    }
+
+                    View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
+
+                    TextView nombreSitio = (TextView) v.findViewById(R.id.title);
+                    nombreSitio.setText(sitio.getNombres());
+
+                    TextView detalleSitio = (TextView) v.findViewById(R.id.snippet);
+                    detalleSitio.setText(sitio.getDetalle());
+
+                    return v;
+
+                }
+            });
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    if(restaurantes!=null && restaurantes.containsKey(marker)){
+                        marker.showInfoWindow();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
     }
 
     @Override
@@ -226,65 +228,32 @@ public class MapsActivity extends FragmentActivity{
         return true;
     }
 
-    private void ocultarMarcadores(List<Marker> marcadores){
+    private void ocultarMarcadores(Map<Marker,Sitio> marcadores){
         if (marcadores != null){
-            for (Marker marker : marcadores){
+            for (Marker marker : marcadores.keySet()){
                 marker.remove();
             }
+            marcadores.clear();
         }
     }
 
     private void mostrarRestaurantes(){
         Log.i(TAG,"Mostrando restaurantes");
         if (restaurantes == null){
-            List<MarkerOptions> marcadores = inicializarRestaurantes();
-            restaurantes = new ArrayList<Marker>();
-            for (MarkerOptions markerOptions : marcadores){
-                restaurantes.add(mMap.addMarker(markerOptions));
-            }
+            restaurantes = MapHelper.inicializarSitios(mMap, DataHelper.getRestaurantes(),R.drawable.restaurant);
         }
     }
 
     private void mostrarHoteles(){
         Log.i(TAG,"Mostrando hoteles");
         if(hoteles == null){
-            List<MarkerOptions> marcadores = inicializarHoteles();
-            hoteles = new ArrayList<Marker>();
-            for (MarkerOptions markerOptions : marcadores){
-                hoteles.add(mMap.addMarker(markerOptions));
-            }
+            hoteles = MapHelper.inicializarSitios(mMap,DataHelper.getHoteles(),R.drawable.hotel);
         }
     }
 
-    private List<MarkerOptions> inicializarRestaurantes(){
-        BitmapDescriptor bt = BitmapDescriptorFactory.fromResource(R.drawable.restaurant);
-        String[] nombres = new String[]{"Flakos","Bambinos","Richard"};
-        String[] descripcionesRestaurantes = new String[]{"Este es el restaurante Flakos","Este es el restaurante Bambinos","Este es el restaurante Richard"};
-        Double[] latitudes = new Double[]{4.410819,4.408990, 4.413429 };
-        Double[] longitudes = new Double[]{-76.153504,-76.153848, -76.152968};
 
-        List<MarkerOptions> marcadores = new ArrayList<MarkerOptions>();
-        for (int i = 0; i < nombres.length; i++){
-            marcadores.add(new MarkerOptions().title(nombres[i]).icon(bt).position(new LatLng(latitudes[i], longitudes[i])).snippet(descripcionesRestaurantes[i]));
-        }
-        return marcadores;
-    }
 
-    private List<MarkerOptions> inicializarHoteles() {
-        BitmapDescriptor bt = BitmapDescriptorFactory.fromResource(R.drawable.hotel);
-        String[] nombres = new String[]{"Balcones del Parque", "La Posada", "Iyoma"};
-        String[] descripcionesHoteles = new String[]{"Este es el hotel BP","Este es el hotel La Posada","Este es el hotel Iyoma"};
-        Double[] latitudes = new Double[]{4.410937, 4.409439, 4.407506};
-        Double[] longitudes = new Double[]{-76.153762, -76.153998, -76.154024};
 
-        List<MarkerOptions> marcadores = new ArrayList<MarkerOptions>();
-
-        for (int i = 0; i < nombres.length; i++) {
-            marcadores.add(new MarkerOptions().title(nombres[i]).icon(bt).position(new LatLng(latitudes[i], longitudes[i])).snippet(descripcionesHoteles[i]));
-        }
-
-        return marcadores;
-    }
 
     private void encuentrame() {
         Log.i(TAG,"Encuentrame!");
