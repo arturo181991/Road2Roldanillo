@@ -8,18 +8,15 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -28,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,20 +35,23 @@ import intep.proyecto.road2roldanillo.util.MapHelper;
 
 
 public class MapsActivity extends FragmentActivity{
+
     private GoogleMap mMap;
+    private Menu menu;
 
     private boolean yourHere;
     private boolean showRestaurants;
     private boolean showHotels;
+    private boolean showAll;
     private boolean findMe;
 
     private static final String TAG = "ROAD2ROLDANILLO";
     private static final String KEY_RESTAURANT = "SHOWRESTAURANTS";
     private static final String KEY_HERE = "YOURHERE";
     private static final String KEY_HOTEL = "SHOWHOTELS";
+    private static final String KEY_ALL = "SHOWALL";
 
-    private Map<Marker,Site> hoteles;
-    private Map<Marker,Site> restaurantes;
+    private Map<Marker,Site> sites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +88,13 @@ public class MapsActivity extends FragmentActivity{
             encuentrame();
         }
         if(showRestaurants){
-            mostrarRestaurantes();
+            showSites(Site.TYPE.RESTAURANT);
         }
         if(showHotels){
-            mostrarHoteles();
+            showSites(Site.TYPE.HOTEL);
+        }
+        if(showAll){
+            showSites(null);
         }
     }
 
@@ -100,6 +104,7 @@ public class MapsActivity extends FragmentActivity{
         outState.putBoolean(KEY_RESTAURANT,showRestaurants);
         outState.putBoolean(KEY_HERE,yourHere);
         outState.putBoolean(KEY_HOTEL,showHotels);
+        outState.putBoolean(KEY_ALL,showAll);
     }
 
     @Override
@@ -108,6 +113,7 @@ public class MapsActivity extends FragmentActivity{
         showRestaurants = savedInstanceState.getBoolean(KEY_RESTAURANT);
         yourHere = savedInstanceState.getBoolean(KEY_HERE);
         showHotels = savedInstanceState.getBoolean(KEY_HOTEL);
+        showAll = savedInstanceState.getBoolean(KEY_ALL);
     }
 
     @Override
@@ -146,10 +152,10 @@ public class MapsActivity extends FragmentActivity{
 
                     Site Site;
 
-                    if(restaurantes.containsKey(marker)){
-                        Site = restaurantes.get(marker);
+                    if(sites.containsKey(marker)){
+                        Site = sites.get(marker);
                     }else{
-                        Site = hoteles.get(marker);
+                        return null;
                     }
 
                     View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
@@ -168,7 +174,7 @@ public class MapsActivity extends FragmentActivity{
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    if(restaurantes!=null && restaurantes.containsKey(marker)){
+                    if(sites!=null && sites.containsKey(marker)){
                         marker.showInfoWindow();
                         return true;
                     }
@@ -188,16 +194,19 @@ public class MapsActivity extends FragmentActivity{
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        this.menu = menu;
+        if(showAll){
+            showRestaurants = true;
+            showHotels = true;
+        }
         menu.findItem(R.id.restaurant).setChecked(showRestaurants);
         menu.findItem(R.id.hotel).setChecked(showHotels);
+        menu.findItem(R.id.all).setChecked(showAll);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         if(item.getItemId() == R.id.findme){
             findMe = true;
             Toast.makeText(this,"Obteniendo su ubicacion", Toast.LENGTH_SHORT).show();
@@ -208,52 +217,57 @@ public class MapsActivity extends FragmentActivity{
                 case R.id.restaurant:
                     showRestaurants = item.isChecked();
                     if(item.isChecked()){
-                        mostrarRestaurantes();
+                        showSites(Site.TYPE.RESTAURANT);
                     }else{
-                        ocultarMarcadores(restaurantes);
-                        restaurantes = null;
+                        menu.findItem(R.id.all).setChecked(false);
+                        hideSites(Site.TYPE.RESTAURANT);
                     }
                     break;
                 case R.id.hotel:
                     showHotels = item.isChecked();
                     if(showHotels){
-                        mostrarHoteles();
+                        showSites(Site.TYPE.HOTEL);
                     }else{
-                        ocultarMarcadores(hoteles);
-                        hoteles = null;
+                        menu.findItem(R.id.all).setChecked(false);
+                        hideSites(Site.TYPE.HOTEL);
                     }
                     break;
+                case R.id.all:
+                    showAll = item.isChecked();
+                    menu.findItem(R.id.restaurant).setChecked(showAll);
+                    menu.findItem(R.id.hotel).setChecked(showAll);
+                    if(showAll){
+                        showSites(null);
+                    }else{
+                        hideSites(null);
+                    }
             }
         }
         return true;
     }
 
-    private void ocultarMarcadores(Map<Marker,Site> marcadores){
-        if (marcadores != null){
-            for (Marker marker : marcadores.keySet()){
+    private void hideSites(Site.TYPE type){
+        if (sites != null){
+            List<Marker> markers = new ArrayList<Marker>();
+            for (Marker marker : sites.keySet()){
+                if(type!=null && type!=sites.get(marker).getType()){
+                    continue;
+                }
                 marker.remove();
+                markers.add(marker);
             }
-            marcadores.clear();
+            for(Marker marker : markers){
+                sites.remove(marker);
+            }
         }
     }
 
-    private void mostrarRestaurantes(){
-        Log.i(TAG,"Mostrando restaurantes");
-        if (restaurantes == null){
-            restaurantes = MapHelper.inicializarSites(mMap, DataHelper.getRestaurantes(),R.drawable.restaurant);
+    private void showSites(Site.TYPE type){
+        if(sites==null){
+            sites = new HashMap<Marker, Site>();
         }
+        sites.putAll(MapHelper.initializeSites(mMap,DataHelper.getSites(),type));
     }
-
-    private void mostrarHoteles(){
-        Log.i(TAG,"Mostrando hoteles");
-        if(hoteles == null){
-            hoteles = MapHelper.inicializarSites(mMap,DataHelper.getHoteles(),R.drawable.hotel);
-        }
-    }
-
-
-
-
 
     private void encuentrame() {
         Log.i(TAG,"Encuentrame!");

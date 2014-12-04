@@ -9,4 +9,7 @@
 
     <item android:icon="@drawable/hotel" android:enabled="true" android:id="@+id/hotel"
         android:title="Hoteles" android:showAsAction="never" android:visible="true" android:checkable="true"/>
+
+    <item android:icon="@drawable/abc_ic_clear" android:enabled="true" android:id="@+id/all"
+        android:title="Todo" android:showAsAction="never" android:visible="true" android:checkable="true"/>
 </menu>

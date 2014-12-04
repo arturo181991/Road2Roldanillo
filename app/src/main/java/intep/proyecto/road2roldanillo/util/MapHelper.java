@@ -21,19 +21,35 @@ import intep.proyecto.road2roldanillo.entidades.Site;
  */
 public class MapHelper {
 
-    public static Map<Marker,Site> inicializarSites(GoogleMap map, List<Site> Sites, int resource){
-        BitmapDescriptor bt = BitmapDescriptorFactory.fromResource(resource);
+    public static Map<Marker,Site> initializeSites(GoogleMap map, List<Site> Sites, Site.TYPE type){
 
+        BitmapDescriptor iconHotel = BitmapDescriptorFactory.fromResource(R.drawable.hotel);
+        BitmapDescriptor iconRestaurant = BitmapDescriptorFactory.fromResource(R.drawable.restaurant);
 
         Map<Marker,Site> mapa = new HashMap<Marker, Site>();
 
-        for (Site restaurante : Sites) {
-            MarkerOptions markerOption = new MarkerOptions().title(restaurante.getNombres()).
-                    icon(bt)
-                    .position(new LatLng(restaurante.getLatitud(), restaurante.getLongitud()))
-                    .snippet(restaurante.getDetalle());
+        for (Site site : Sites) {
+
+            if(type!=null && type!=site.getType()){
+                continue;
+            }
+
+            MarkerOptions markerOption = new MarkerOptions().title(site.getNombres())
+                    .position(new LatLng(site.getLatitud(), site.getLongitud()))
+                    .snippet(site.getDetalle());
+
+            switch (site.getType()){
+                case HOTEL:
+                    markerOption.icon(iconHotel);
+                    break;
+                case RESTAURANT:
+                    markerOption.icon(iconRestaurant);
+                    break;
+            }
+
             Marker marker = map.addMarker(markerOption);
-            mapa.put(marker,restaurante);
+            mapa.put(marker,site);
+
         }
 
         return mapa;

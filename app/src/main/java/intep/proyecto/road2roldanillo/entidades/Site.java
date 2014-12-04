@@ -4,16 +4,24 @@ package intep.proyecto.road2roldanillo.entidades;
  * Created by gurzaf on 12/3/14.
  */
 public class Site {
+
+    public enum TYPE{
+        HOTEL,
+        RESTAURANT
+    }
+
     private String nombres;
     private String detalle;
     private Double latitud;
     private Double longitud;
+    private TYPE type;
 
-    public Site(String nombres, String detalle, Double latitud, Double longitud) {
+    public Site(String nombres, String detalle, Double latitud, Double longitud, TYPE type) {
         this.nombres = nombres;
         this.detalle = detalle;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.type = type;
     }
 
     public String getNombres() {
@@ -48,6 +56,11 @@ public class Site {
         this.longitud = longitud;
     }
 
+    public TYPE getType() {
+        return type;
+    }
 
-
+    public void setType(TYPE type) {
+        this.type = type;
+    }
 }
