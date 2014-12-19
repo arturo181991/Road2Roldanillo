@@ -1,5 +1,6 @@
 package intep.proyecto.road2roldanillo;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -204,7 +205,11 @@ public class MapsActivity extends FragmentActivity{
                         Log.i("Click","Dio click");
                         Intent intent = new Intent(MapsActivity.this,TabbedActivity.class);
                         intent.putExtra(KEY_SITE,site);
-                        startActivity(intent);
+
+                        Bundle bndlanimation =
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+
+                        startActivity(intent,bndlanimation);
                     }
 
                 }
