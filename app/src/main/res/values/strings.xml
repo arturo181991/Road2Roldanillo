@@ -8,6 +8,16 @@
     <string name="my_location">Mi ubicación</string>
     <string name="button_go_ubication">Ir a la ubicación</string>
     <string name="button_review">Reseñas del sitio</string>
-    <color name="bg_color">#ffffff</color>
-</resources>
+    <string name="button_go">Ir al sitio</string>
+    <string name="flecha1">flecha1</string>
+    <string name="ic_search">Buscar</string>
+    <string name="menu_findMe">Encuéntrame</string>
 
+    <color name="bg_color">#ffffff</color>
+
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+</resources>

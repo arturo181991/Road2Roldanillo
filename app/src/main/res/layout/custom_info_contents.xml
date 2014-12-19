@@ -2,29 +2,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/bg_color">
+    android:orientation="horizontal"
+    android:background="@color/bg_color"
+    android:padding="0dp">
+
+    <ImageButton
+            android:id="@+id/button_go_ubication"
+            android:layout_width="43dp"
+            android:src="@drawable/abc_ic_ab_back_holo_dark"
+            android:layout_height="fill_parent"
+            android:text="@string/button_go_ubication"
+        android:contentDescription="@string/flecha1" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="22dp"
+        android:columnCount="3"
+        android:rowCount="4">
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
-        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="Segoe UI"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_columnSpan="3" />
+
+        <RatingBar
+            android:id="@+id/rtbProductRating"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:numStars="5"
+            android:rating="3.5"
+            android:isIndicator="false"
+            style="@style/foodRatingBar"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_rowSpan="3" />
+
+        <!--<TextView
             android:id="@+id/snippet"
-            android:layout_width="wrap_content"
+            android:layout_width="wrap_content"'
             android:layout_height="wrap_content"
-            android:textSize="10dp"/>
-        <Button
-            android:id="@+id/button_go_ubication"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_go_ubication"/>
-        <Button
-            android:id="@+id/button_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_review"/>
+            android:textSize="10sp"/>-->
+
+    </GridLayout>
+
+    <ImageButton
+        android:id="@+id/button_review"
+        android:layout_width="43dp"
+        android:src="@drawable/abc_ic_go"
+        android:layout_height="fill_parent"
+        android:text="@string/button_review"
+        android:background="@drawable/ic_launcher"
+        android:baselineAlignBottom="false"
+        android:adjustViewBounds="false"
+        android:duplicateParentState="false"
+        android:contentDescription="" />
 
 </LinearLayout>

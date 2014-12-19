@@ -1,6 +1,8 @@
 package intep.proyecto.road2roldanillo;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +37,8 @@ import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.util.DataHelper;
 import intep.proyecto.road2roldanillo.util.MapHelper;
 
+import static android.view.View.OnClickListener;
+
 
 public class MapsActivity extends FragmentActivity{
 
@@ -52,14 +58,30 @@ public class MapsActivity extends FragmentActivity{
     private static final String KEY_ALL = "SHOWALL";
 
     private Map<Marker,Site> sites;
+    private Marker miUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        encuentrameInicial();
+    }
 
-
+    private void encuentrameInicial() {
+        findMe = true;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000l);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                encuentrame();
+            }
+        });
+        thread.start();
     }
 
 //    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
@@ -144,12 +166,19 @@ public class MapsActivity extends FragmentActivity{
 
                 @Override
                 public View getInfoWindow(Marker marker) {
+
+
+
+
+                    /*TextView detalleSite = (TextView) v.findViewById(R.id.snippet);
+                    detalleSite.setText(Site.getDetalle());*/
+
                     return null;
+
                 }
 
                 @Override
                 public View getInfoContents(Marker marker) {
-
                     Site Site;
 
                     if(sites.containsKey(marker)){
@@ -159,12 +188,19 @@ public class MapsActivity extends FragmentActivity{
                     }
 
                     View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-
                     TextView nombreSite = (TextView) v.findViewById(R.id.title);
                     nombreSite.setText(Site.getNombres());
 
-                    TextView detalleSite = (TextView) v.findViewById(R.id.snippet);
-                    detalleSite.setText(Site.getDetalle());
+                    ImageButton botonReview = (ImageButton) v.findViewById(R.id.button_review);
+                    Log.i("Llega al evento","Evento click");
+                    botonReview.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("Click","Dio click");
+                            Intent intent = new Intent(MapsActivity.this,TabbedActivity.class);
+                            startActivity(intent);
+                        }
+                    });
 
                     return v;
 
@@ -181,6 +217,8 @@ public class MapsActivity extends FragmentActivity{
                     return false;
                 }
             });
+
+
 
     }
 
@@ -209,7 +247,7 @@ public class MapsActivity extends FragmentActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.findme){
             findMe = true;
-            Toast.makeText(this,"Obteniendo su ubicacion", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Obteniendo su ubicacion...", Toast.LENGTH_SHORT).show();
             encuentrame();
         }else{
             item.setChecked(!item.isChecked());
@@ -272,7 +310,7 @@ public class MapsActivity extends FragmentActivity{
     }
 
     private void encuentrame() {
-        Log.i(TAG,"Encuentrame!");
+        Log.i(TAG,"Buscando ubicacion actual....");
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
 
@@ -294,6 +332,9 @@ public class MapsActivity extends FragmentActivity{
     }
 
     private void teEncontre(Location location) {
+        if(miUbicacion!=null){
+            miUbicacion.remove();
+        }
         yourHere = true;
         Toast.makeText(this,getString(R.string.you_r_here),Toast.LENGTH_SHORT).show();
         if(findMe){
@@ -305,7 +346,7 @@ public class MapsActivity extends FragmentActivity{
             mMap.animateCamera(zoom,2000,null);
         }
         BitmapDescriptor bt = BitmapDescriptorFactory.fromResource(R.drawable.me);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(getString(R.string.my_location)).icon(bt));
+        miUbicacion = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(getString(R.string.my_location)).icon(bt));
     }
 
 }

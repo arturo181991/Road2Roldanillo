@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:icon="@drawable/ic_menu_compass" android:enabled="true" android:id="@+id/findme"
-        android:title="Encuentrame" android:showAsAction="ifRoom" android:visible="true"/>
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/abc_ic_search"
+        android:title="@string/ic_search"
+        android:showAsAction="ifRoom" />
 
     <item android:icon="@drawable/restaurant" android:enabled="true" android:id="@+id/restaurant"
         android:title="Restaurantes" android:showAsAction="never" android:visible="true" android:checkable="true"/>
@@ -12,4 +14,8 @@
 
     <item android:icon="@drawable/abc_ic_clear" android:enabled="true" android:id="@+id/all"
         android:title="Todo" android:showAsAction="never" android:visible="true" android:checkable="true"/>
+
+    <item android:icon="@drawable/ic_menu_compass" android:enabled="true" android:id="@+id/findme"
+        android:title="@string/menu_findMe" android:showAsAction="never" android:visible="true" />
+
 </menu>
