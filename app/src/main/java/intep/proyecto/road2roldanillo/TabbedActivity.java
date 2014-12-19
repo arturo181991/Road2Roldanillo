@@ -24,20 +24,11 @@ import intep.proyecto.road2roldanillo.entidades.Site;
 
 public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v13.app.FragmentStatePagerAdapter}.
-     */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     ViewPager mViewPager;
+
+    private Site site;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +72,8 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         Intent intent = getIntent();
 
         if(intent.hasExtra(MapsActivity.KEY_SITE)){
-            Site site = (Site) intent.getSerializableExtra(MapsActivity.KEY_SITE);
-            getActionBar().setTitle(site.getNombres());
+            site = (Site) intent.getSerializableExtra(MapsActivity.KEY_SITE);
+            actionBar.setTitle(site.getNombres());
         }else{
             finish();
         }
@@ -137,9 +128,13 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+
+            if(position==0){
+                return DescripcionFragment.newInstance(site);
+            }else{
+                return PlaceholderFragment.newInstance(position + 1);
+            }
+
         }
 
         @Override

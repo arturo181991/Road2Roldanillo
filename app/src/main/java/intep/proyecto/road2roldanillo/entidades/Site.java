@@ -14,13 +14,17 @@ public class Site implements Serializable{
 
     private String nombres;
     private String detalle;
+    private String direccion;
+    private Float rating;
     private Double latitud;
     private Double longitud;
     private TYPE type;
 
-    public Site(String nombres, String detalle, Double latitud, Double longitud, TYPE type) {
+    public Site(String nombres, String detalle, String direccion, Float rating, Double latitud, Double longitud, TYPE type) {
         this.nombres = nombres;
         this.detalle = detalle;
+        this.direccion = direccion;
+        this.rating = rating;
         this.latitud = latitud;
         this.longitud = longitud;
         this.type = type;
@@ -64,5 +68,21 @@ public class Site implements Serializable{
 
     public void setType(TYPE type) {
         this.type = type;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 }

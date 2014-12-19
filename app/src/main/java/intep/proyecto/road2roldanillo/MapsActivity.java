@@ -178,23 +178,24 @@ public class MapsActivity extends FragmentActivity{
                 @Override
                 public View getInfoContents(Marker marker) {
 
-                    Site Site;
+                    Site site;
 
                     if(sites!=null && sites.containsKey(marker)){
-                        Site = sites.get(marker);
+                        site = sites.get(marker);
                     }else{
                         return null;
                     }
 
                     View v = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
                     TextView nombreSite = (TextView) v.findViewById(R.id.title);
-                    nombreSite.setText(Site.getNombres());
+                    nombreSite.setText(site.getNombres());
 
                     TextView address = (TextView) v.findViewById(R.id.address);
-                    address.setText(Site.getDetalle());
+                    address.setText(site.getDireccion());
+
 
                     RatingBar ratingBar = (RatingBar) v.findViewById(R.id.starRating);
-                    ratingBar.setRating(3.5f);
+                    ratingBar.setRating(site.getRating());
                     return v;
 
                 }
