@@ -59,6 +59,8 @@ public class MapsActivity extends FragmentActivity{
 
     private Map<Marker,Site> sites;
     private Marker miUbicacion;
+    
+    public static final String KEY_SITE = "SITE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,21 +169,16 @@ public class MapsActivity extends FragmentActivity{
                 @Override
                 public View getInfoWindow(Marker marker) {
 
-
-
-
-                    /*TextView detalleSite = (TextView) v.findViewById(R.id.snippet);
-                    detalleSite.setText(Site.getDetalle());*/
-
                     return null;
 
                 }
 
                 @Override
                 public View getInfoContents(Marker marker) {
+
                     Site Site;
 
-                    if(sites.containsKey(marker)){
+                    if(sites!=null && sites.containsKey(marker)){
                         Site = sites.get(marker);
                     }else{
                         return null;
@@ -191,16 +188,8 @@ public class MapsActivity extends FragmentActivity{
                     TextView nombreSite = (TextView) v.findViewById(R.id.title);
                     nombreSite.setText(Site.getNombres());
 
-                    ImageButton botonReview = (ImageButton) v.findViewById(R.id.button_review);
-                    Log.i("Llega al evento","Evento click");
-                    botonReview.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.i("Click","Dio click");
-                            Intent intent = new Intent(MapsActivity.this,TabbedActivity.class);
-                            startActivity(intent);
-                        }
-                    });
+                    TextView address = (TextView) v.findViewById(R.id.address);
+                    address.setText(Site.getDetalle());
 
                     return v;
 
@@ -217,6 +206,23 @@ public class MapsActivity extends FragmentActivity{
                     return false;
                 }
             });
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+
+                    if(sites!=null && sites.containsKey(marker)){
+                        Site site = sites.get(marker);
+                        Log.i("Click","Dio click");
+                        Intent intent = new Intent(MapsActivity.this,TabbedActivity.class);
+                        intent.putExtra(KEY_SITE,site);
+                        startActivity(intent);
+                    }
+
+                }
+            });
+
+
 
 
 

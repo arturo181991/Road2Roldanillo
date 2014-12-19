@@ -1,9 +1,11 @@
 package intep.proyecto.road2roldanillo.entidades;
 
+import java.io.Serializable;
+
 /**
  * Created by gurzaf on 12/3/14.
  */
-public class Site {
+public class Site implements Serializable{
 
     public enum TYPE{
         HOTEL,
