@@ -30,7 +30,7 @@
             android:id="@+id/address" />
 
         <RatingBar
-            android:id="@+id/rtbProductRating"
+            android:id="@+id/starRating"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:numStars="5"

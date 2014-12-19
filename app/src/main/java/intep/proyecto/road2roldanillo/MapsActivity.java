@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +73,7 @@ public class MapsActivity extends FragmentActivity{
 
     private void encuentrameInicial() {
         findMe = true;
-        Thread thread = new Thread(new Runnable() {
+        /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -80,10 +81,11 @@ public class MapsActivity extends FragmentActivity{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                encuentrame();
+
             }
         });
-        thread.start();
+        thread.start();*/
+        encuentrame();
     }
 
 //    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
@@ -191,6 +193,8 @@ public class MapsActivity extends FragmentActivity{
                     TextView address = (TextView) v.findViewById(R.id.address);
                     address.setText(Site.getDetalle());
 
+                    RatingBar ratingBar = (RatingBar) v.findViewById(R.id.starRating);
+                    ratingBar.setRating(3.5f);
                     return v;
 
                 }
