@@ -88,23 +88,6 @@ public class MapsActivity extends FragmentActivity{
         encuentrame();
     }
 
-//    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter{
-//        private View view;
-//        public CustomInfoWindowAdapter(){
-//            view = getLayoutInflater().inflate(R.layout.custom_info_contents,null);
-//        }
-//
-//        @Override
-//        public View getInfoContents(Marker marker) {
-//            return null;
-//        }
-//
-//        @Override
-//        public View getInfoWindow(Marker marker) {
-//            return view;
-//        }
-//    }
-
     //Se debe reimplementar al menos los 4 metodos onCreate(), onResume(), **onPause()** y onDestroy() para que funcione
     @Override
     protected void onResume() {

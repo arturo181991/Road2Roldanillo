@@ -3,12 +3,12 @@
 
     <string name="app_name">Road2Roldanillo</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="llegarAlSitio">Cómo llegar aqui</string>
     <string name="you_r_here">Aquí estás :)</string>
     <string name="my_location">Mi ubicación</string>
     <string name="button_go_ubication">Ir a la ubicación</string>
     <string name="button_review">Reseñas del sitio</string>
-    <string name="button_go">Ir al sitio</string>
+    <string name="go_to_site">Ir al sitio</string>
     <string name="flecha1">flecha1</string>
     <string name="ic_search">Buscar</string>
     <string name="menu_findMe">Encuéntrame</string>
