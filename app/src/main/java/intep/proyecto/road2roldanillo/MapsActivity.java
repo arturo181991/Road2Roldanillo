@@ -2,7 +2,6 @@ package intep.proyecto.road2roldanillo;
 
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -14,8 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +36,6 @@ import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.util.DataHelper;
 import intep.proyecto.road2roldanillo.util.MapHelper;
 
-import static android.view.View.OnClickListener;
-
 
 public class MapsActivity extends FragmentActivity{
 
@@ -58,6 +53,8 @@ public class MapsActivity extends FragmentActivity{
     private static final String KEY_HERE = "YOURHERE";
     private static final String KEY_HOTEL = "SHOWHOTELS";
     private static final String KEY_ALL = "SHOWALL";
+
+    private static final int REQUEST_CODE_TABBED = 100;
 
     private Map<Marker,Site> sites;
     private Marker miUbicacion;
@@ -207,7 +204,7 @@ public class MapsActivity extends FragmentActivity{
                         intent.putExtra(KEY_SITE,site);
 
                         Bundle bndlanimation =
-                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.animation, R.anim.animation2).toBundle();
+                                ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();
 
                         startActivity(intent,bndlanimation);
                     }
@@ -223,7 +220,6 @@ public class MapsActivity extends FragmentActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
