@@ -21,4 +21,6 @@
     <string name="title_section3">Section 3</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <integer name="animation_duration">500</integer>
+
 </resources>
