@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import intep.proyecto.road2roldanillo.entidades.Site;
 
 
@@ -27,6 +29,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     ViewPager mViewPager;
 
     private Site site;
+    private LatLng miUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,10 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
             actionBar.setTitle(site.getNombres());
         }else{
             finish();
+        }
+
+        if(intent.hasExtra(MapsActivity.KEY_MY_LOCATION)){
+            miUbicacion = (LatLng) intent.getParcelableExtra(MapsActivity.KEY_MY_LOCATION);
         }
 
     }
