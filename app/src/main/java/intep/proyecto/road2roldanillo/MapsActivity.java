@@ -72,22 +72,9 @@ public class MapsActivity extends FragmentActivity{
 
     private void encuentrameInicial() {
         findMe = true;
-        /*Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000l);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        thread.start();*/
         encuentrame();
     }
 
-    //Se debe reimplementar al menos los 4 metodos onCreate(), onResume(), **onPause()** y onDestroy() para que funcione
     @Override
     protected void onResume() {
         super.onResume();
