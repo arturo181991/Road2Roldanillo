@@ -19,6 +19,8 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import intep.proyecto.road2roldanillo.entidades.Site;
 
 
@@ -28,6 +30,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     ViewPager mViewPager;
 
     private Site site;
+    private LatLng miUbicacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,10 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
             finish();
         }
 
+        if(intent.hasExtra(MapsActivity.KEY_MY_LOCATION)){
+            miUbicacion = (LatLng) intent.getParcelableExtra(MapsActivity.KEY_MY_LOCATION);
+        }
+
     }
 
 
@@ -85,6 +92,13 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tabbed, menu);
+
+        if(miUbicacion==null){
+            menu.removeItem(R.id.menu_transport);
+            menu.removeItem(R.id.menu_vehicle);
+            menu.removeItem(R.id.menu_walk);
+        }
+
         return true;
     }
 
@@ -94,7 +108,8 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+//        if()
         return super.onOptionsItemSelected(item);
     }
 

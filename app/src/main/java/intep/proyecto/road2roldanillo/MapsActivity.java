@@ -60,6 +60,7 @@ public class MapsActivity extends FragmentActivity{
     private Marker miUbicacion;
     
     public static final String KEY_SITE = "SITE";
+    public static final String KEY_MY_LOCATION = "MY_LOCATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +190,9 @@ public class MapsActivity extends FragmentActivity{
                         Log.i("Click","Dio click");
                         Intent intent = new Intent(MapsActivity.this,TabbedActivity.class);
                         intent.putExtra(KEY_SITE,site);
+                        if(miUbicacion!=null){
+                            intent.putExtra(KEY_MY_LOCATION,miUbicacion.getPosition());
+                        }
 
                         Bundle bndlanimation =
                                 ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.slide_in_right, R.anim.slide_out_left).toBundle();

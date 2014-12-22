@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="intep.proyecto.road2roldanillo.TabbedActivity" >
+    tools:context="intep.proyecto.road2roldanillo.TabbedActivity">
     <!--<item android:id="@+id/action_navigate"
         android:icon="@drawable/ic_navigation"
         android:title="@string/go_to_site"
