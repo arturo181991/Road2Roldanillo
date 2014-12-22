@@ -97,10 +97,23 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_navigate) {
+
+            navegar();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void navegar() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Cómo llegar aqui:");
+        alertDialog.setMessage("Medios de transporte");
+        alertDialog.setIcon(R.drawable.ic_navigation);
+        alertDialog.show();
+
     }
 
     @Override
