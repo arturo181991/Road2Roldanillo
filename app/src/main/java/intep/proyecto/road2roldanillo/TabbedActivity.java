@@ -92,6 +92,13 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tabbed, menu);
+
+        if(miUbicacion==null){
+            menu.removeItem(R.id.menu_transport);
+            menu.removeItem(R.id.menu_vehicle);
+            menu.removeItem(R.id.menu_walk);
+        }
+
         return true;
     }
 
@@ -101,7 +108,8 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+//        if()
         return super.onOptionsItemSelected(item);
     }
 
@@ -161,8 +169,6 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
                     return getString(R.string.title_section1).toUpperCase(l);
                 case 1:
                     return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
         }
