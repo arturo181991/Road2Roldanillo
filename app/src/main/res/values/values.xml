@@ -12,13 +12,15 @@
     <string name="flecha1">flecha1</string>
     <string name="ic_search">Buscar</string>
     <string name="menu_findMe">Encuéntrame</string>
+    <string name="menu_go_site_walk">Llegar aqui caminando</string>
+    <string name="menu_go_site_vehiculo">Llegar aqui en vehiculo</string>
+    <string name="menu_go_site_transport">Llegar aqui en transporte</string>
 
     <color name="bg_color">#ffffff</color>
 
     <string name="title_activity_tabbed">Tabbed Activity</string>
     <string name="title_section1">Descripción</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Comentarios</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <integer name="animation_duration">500</integer>
