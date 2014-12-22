@@ -4,22 +4,18 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ClipData;
 import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import intep.proyecto.road2roldanillo.entidades.Site;
 
@@ -114,6 +110,12 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         alertDialog.setIcon(R.drawable.ic_navigation);
         alertDialog.show();
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 
     @Override
