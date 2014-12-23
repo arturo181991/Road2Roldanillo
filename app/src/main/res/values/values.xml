@@ -12,9 +12,7 @@
     <string name="flecha1">flecha1</string>
     <string name="ic_search">Buscar</string>
     <string name="menu_findMe">Encuéntrame</string>
-    <string name="menu_go_site_walk">Llegar aqui caminando</string>
-    <string name="menu_go_site_vehiculo">Llegar aqui en vehiculo</string>
-    <string name="menu_go_site_transport">Llegar aqui en transporte</string>
+    <string name="how_to_go">Como llegar</string>
 
     <color name="bg_color">#ffffff</color>
 
