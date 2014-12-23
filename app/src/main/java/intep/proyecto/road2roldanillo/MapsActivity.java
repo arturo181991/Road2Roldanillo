@@ -44,9 +44,6 @@ public class MapsActivity extends FragmentActivity{
 
     private GoogleMap mMap;
     private Menu menu;
-    private DrawerLayout mDrawer;
-    private ListView mDrawerOptions;
-    private static final String[] values = {"Drawer 1", "Drawer 2", "Drawer 3"};
 
     private boolean yourHere;
     private boolean showRestaurants;
@@ -74,19 +71,8 @@ public class MapsActivity extends FragmentActivity{
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
         encuentrameInicial();
-        mostrarMenuLateral();
     }
 
-    private void mostrarMenuLateral(){
-        setContentView(R.layout.drawer_layout);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mDrawerOptions = (ListView) findViewById(R.id.left_drawer);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mDrawerOptions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values));
-        mDrawerOptions.setOnItemClickListener(this);
-    }
 
     private void encuentrameInicial() {
         findMe = true;
