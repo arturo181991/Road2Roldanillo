@@ -3,7 +3,7 @@
 
 <resources>
 
-    <style name="Theme.Action_bar" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.Action_bar" parent="Theme.AppCompat.Light">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_action_bar</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Action_bar</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Action_bar</item>

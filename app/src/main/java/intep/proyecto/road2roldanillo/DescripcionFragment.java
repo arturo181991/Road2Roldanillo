@@ -11,6 +11,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.map.MapHelper;
 
 
 public class DescripcionFragment extends TabbedActivity.PlaceholderFragment {
@@ -20,7 +21,7 @@ public class DescripcionFragment extends TabbedActivity.PlaceholderFragment {
     public static DescripcionFragment newInstance(Site site) {
         DescripcionFragment fragment = new DescripcionFragment();
         Bundle args = new Bundle();
-        args.putSerializable(MapsActivity.KEY_SITE, site);
+        args.putSerializable(MapHelper.KEY_SITE, site);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,7 +34,7 @@ public class DescripcionFragment extends TabbedActivity.PlaceholderFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            site = (Site) getArguments().getSerializable(MapsActivity.KEY_SITE);
+            site = (Site) getArguments().getSerializable(MapHelper.KEY_SITE);
         }
     }
 

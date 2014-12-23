@@ -7,10 +7,6 @@ import java.io.Serializable;
  */
 public class Site implements Serializable{
 
-    public enum TYPE{
-        HOTEL,
-        RESTAURANT
-    }
 
     private String nombres;
     private String detalle;
@@ -18,16 +14,16 @@ public class Site implements Serializable{
     private Float rating;
     private Double latitud;
     private Double longitud;
-    private TYPE type;
+    private Categoria categoria;
 
-    public Site(String nombres, String detalle, String direccion, Float rating, Double latitud, Double longitud, TYPE type) {
+    public Site(String nombres, String detalle, String direccion, Float rating, Double latitud, Double longitud, Categoria categoria) {
         this.nombres = nombres;
         this.detalle = detalle;
         this.direccion = direccion;
         this.rating = rating;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.type = type;
+        this.categoria = categoria;
     }
 
     public String getNombres() {
@@ -62,12 +58,12 @@ public class Site implements Serializable{
         this.longitud = longitud;
     }
 
-    public TYPE getType() {
-        return type;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setType(TYPE type) {
-        this.type = type;
+    public void setType(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public String getDireccion() {

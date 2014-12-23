@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.model.LatLng;
 
 import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.map.MapHelper;
 
 
 public class TabbedActivity extends Activity implements ActionBar.TabListener {
@@ -75,15 +76,15 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
         Intent intent = getIntent();
 
-        if(intent.hasExtra(MapsActivity.KEY_SITE)){
-            site = (Site) intent.getSerializableExtra(MapsActivity.KEY_SITE);
+        if(intent.hasExtra(MapHelper.KEY_SITE)){
+            site = (Site) intent.getSerializableExtra(MapHelper.KEY_SITE);
             actionBar.setTitle(site.getNombres());
         }else{
             finish();
         }
 
-        if(intent.hasExtra(MapsActivity.KEY_MY_LOCATION)){
-            miUbicacion = (LatLng) intent.getParcelableExtra(MapsActivity.KEY_MY_LOCATION);
+        if(intent.hasExtra(MapHelper.KEY_MY_LOCATION)){
+            miUbicacion = (LatLng) intent.getParcelableExtra(MapHelper.KEY_MY_LOCATION);
         }
 
     }

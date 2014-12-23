@@ -21,19 +21,18 @@
             android:value="AIzaSyB-Q7_BnxJBCZ0L0v7RunCKBwhn69U_SGA" />
 
         <activity
-            android:name=".MapsActivity"
-            android:logo="@drawable/ic_header"
-            android:label="@string/app_name" >
+            android:name=".TabbedActivity"
+            android:label="@string/title_activity_tabbed"
+            android:logo="@drawable/ic_header" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:logo="@drawable/ic_header"
-            android:name=".TabbedActivity"
-            android:label="@string/title_activity_tabbed" >
         </activity>
     </application>
 
