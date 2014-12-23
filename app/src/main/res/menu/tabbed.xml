@@ -5,12 +5,6 @@
         android:icon="@drawable/ic_navigation"
         android:title="@string/go_to_site"
         android:showAsAction="ifRoom" />-->
-    <item android:icon="@drawable/restaurant" android:enabled="true" android:id="@+id/menu_walk"
-        android:title="@string/menu_go_site_walk" android:showAsAction="never" android:visible="true"/>
-
-    <item android:icon="@drawable/hotel" android:enabled="true" android:id="@+id/menu_vehicle"
-        android:title="@string/menu_go_site_vehiculo" android:showAsAction="never" android:visible="true"/>
-
-    <item android:icon="@drawable/abc_ic_clear" android:enabled="true" android:id="@+id/menu_transport"
-        android:title="@string/menu_go_site_transport" android:showAsAction="never" android:visible="true"/>
+    <item android:enabled="true" android:icon="@drawable/ic_navigation" android:id="@+id/menu_go"
+        android:title="@string/how_to_go" android:visible="true" android:showAsAction="always" />
 </menu>

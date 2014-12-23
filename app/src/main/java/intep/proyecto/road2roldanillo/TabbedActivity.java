@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -40,6 +41,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -94,9 +96,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         getMenuInflater().inflate(R.menu.tabbed, menu);
 
         if(miUbicacion==null){
-            menu.removeItem(R.id.menu_transport);
-            menu.removeItem(R.id.menu_vehicle);
-            menu.removeItem(R.id.menu_walk);
+            menu.removeItem(R.id.menu_go);
         }
 
         return true;
@@ -105,12 +105,28 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if()
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.menu_go:
+                obtenerRuta();
+                return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void obtenerRuta() {
+        String url = "http://maps.google.com/maps?saddr="+miUbicacion.latitude
+                +","+miUbicacion.longitude
+                +"&daddr="+site.getLatitud()
+                +","+site.getLongitud()
+                +"&mode=walking";
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
+        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+        startActivity(intent);
     }
 
     @Override
