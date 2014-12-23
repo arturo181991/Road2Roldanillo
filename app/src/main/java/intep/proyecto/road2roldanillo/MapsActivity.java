@@ -9,10 +9,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +44,9 @@ public class MapsActivity extends FragmentActivity{
 
     private GoogleMap mMap;
     private Menu menu;
+    private DrawerLayout mDrawer;
+    private ListView mDrawerOptions;
+    private static final String[] values = {"Drawer 1", "Drawer 2", "Drawer 3"};
 
     private boolean yourHere;
     private boolean showRestaurants;
@@ -68,6 +74,18 @@ public class MapsActivity extends FragmentActivity{
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
         encuentrameInicial();
+        mostrarMenuLateral();
+    }
+
+    private void mostrarMenuLateral(){
+        setContentView(R.layout.drawer_layout);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mDrawerOptions = (ListView) findViewById(R.id.left_drawer);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mDrawerOptions.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values));
+        mDrawerOptions.setOnItemClickListener(this);
     }
 
     private void encuentrameInicial() {
@@ -162,11 +180,9 @@ public class MapsActivity extends FragmentActivity{
                     TextView address = (TextView) v.findViewById(R.id.address);
                     address.setText(site.getDireccion());
 
-
                     RatingBar ratingBar = (RatingBar) v.findViewById(R.id.starRating);
                     ratingBar.setRating(site.getRating());
                     return v;
-
                 }
             });
 
@@ -202,10 +218,6 @@ public class MapsActivity extends FragmentActivity{
 
                 }
             });
-
-
-
-
 
     }
 

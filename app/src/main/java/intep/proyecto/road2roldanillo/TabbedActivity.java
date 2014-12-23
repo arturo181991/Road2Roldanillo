@@ -9,7 +9,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -41,7 +40,6 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -75,19 +73,18 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
         Intent intent = getIntent();
 
-        if(intent.hasExtra(MapsActivity.KEY_SITE)){
+        if (intent.hasExtra(MapsActivity.KEY_SITE)) {
             site = (Site) intent.getSerializableExtra(MapsActivity.KEY_SITE);
             actionBar.setTitle(site.getNombres());
-        }else{
+        } else {
             finish();
         }
 
-        if(intent.hasExtra(MapsActivity.KEY_MY_LOCATION)){
+        if (intent.hasExtra(MapsActivity.KEY_MY_LOCATION)) {
             miUbicacion = (LatLng) intent.getParcelableExtra(MapsActivity.KEY_MY_LOCATION);
         }
 
     }
-
 
 
     @Override
@@ -95,8 +92,10 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tabbed, menu);
 
-        if(miUbicacion==null){
-            menu.removeItem(R.id.menu_go);
+        if (miUbicacion == null) {
+            menu.removeItem(R.id.menu_transport);
+            menu.removeItem(R.id.menu_vehicle);
+            menu.removeItem(R.id.menu_walk);
         }
 
         return true;
@@ -105,28 +104,20 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()){
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.menu_go:
-                obtenerRuta();
-                return true;
+        switch (item.getItemId()) {
+            case R.id.menu_walk:
+                irCaminando();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void obtenerRuta() {
-        String url = "http://maps.google.com/maps?saddr="+miUbicacion.latitude
-                +","+miUbicacion.longitude
-                +"&daddr="+site.getLatitud()
-                +","+site.getLongitud()
-                +"&mode=walking";
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
-        intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-        startActivity(intent);
+    private void irCaminando() {
+        miUbicacion.arturo
     }
 
     @Override
@@ -163,9 +154,9 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         @Override
         public Fragment getItem(int position) {
 
-            if(position==0){
+            if (position == 0) {
                 return DescripcionFragment.newInstance(site);
-            }else{
+            } else {
                 return PlaceholderFragment.newInstance(position + 1);
             }
 
@@ -217,7 +208,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed, container, false);
             return rootView;
         }
