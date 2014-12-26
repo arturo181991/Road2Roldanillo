@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.Map;
 
+import intep.proyecto.road2roldanillo.entidades.Categoria;
 import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 
@@ -48,13 +49,15 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
         mTitle = getTitle();
+
+        mapHelper = new MapHelper();
 
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        mapHelper = new MapHelper();
+                (DrawerLayout) findViewById(R.id.drawer_layout),
+                mapHelper);
 
         setUpMapIfNeeded();
         encuentrameInicial();
@@ -81,28 +84,17 @@ public class MainActivity extends ActionBarActivity
 
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(Categoria categoria) {
 
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-//                .commit();
-
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+        if(mapHelper.isCategoriaSelected(categoria)) {
+            mapHelper.initializeSites(mMap, categoria);
+        }else{
+            mapHelper.hideSites(categoria);
         }
+
+
     }
+
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();

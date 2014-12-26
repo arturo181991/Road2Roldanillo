@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.TabbedActivity;
 import intep.proyecto.road2roldanillo.entidades.Categoria;
 import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.util.DataHelper;
 
 /**
  * Created by gurzaf on 12/23/14.
@@ -50,10 +52,9 @@ public class MapHelper {
     public static final String KEY_MY_LOCATION = "MY_LOCATION";
 
     private boolean yourHere;
-    private boolean showRestaurants;
-    private boolean showHotels;
     private boolean showAll;
     private boolean findMe;
+    private Map<Categoria,Boolean> estadosCategorias;
 
     private Marker miUbicacion;
     private Map<Marker,Site> sites;
@@ -140,11 +141,14 @@ public class MapHelper {
 
     }
 
-    public static Map<Marker,Site> initializeSites(GoogleMap map, List<Site> Sites, Categoria categoria){
+    public void initializeSites(GoogleMap map, Categoria categoria){
 
-        Map<Marker,Site> mapa = new HashMap<Marker, Site>();
+        if(sites==null){
+            sites = new HashMap<Marker, Site>();
+        }
 
-        for (Site site : Sites) {
+
+        for (Site site : DataHelper.getSites()) {
 
             if(categoria!=null && categoria!=site.getCategoria()){
                 continue;
@@ -157,11 +161,26 @@ public class MapHelper {
             markerOption.icon(site.getCategoria().getBitMapDescriptor());
 
             Marker marker = map.addMarker(markerOption);
-            mapa.put(marker,site);
+            sites.put(marker,site);
 
         }
 
-        return mapa;
+    }
+
+    public void hideSites(Categoria categoria){
+        if (sites != null){
+            List<Marker> markers = new ArrayList<Marker>();
+            for (Marker marker : sites.keySet()){
+                if(categoria!=null && categoria!=sites.get(marker).getCategoria()){
+                    continue;
+                }
+                marker.remove();
+                markers.add(marker);
+            }
+            for(Marker marker : markers){
+                sites.remove(marker);
+            }
+        }
     }
 
     public void encuentrame(final MainActivity mainActivity, final GoogleMap mMap) {
@@ -201,28 +220,39 @@ public class MapHelper {
         miUbicacion = mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title(mainActivity.getString(R.string.my_location)).icon(bt));
     }
 
+    public void doSelectCategoria(Categoria categoria) {
+        if(estadosCategorias==null){
+            estadosCategorias = new HashMap<Categoria, Boolean>();
+        }
+        estadosCategorias.put(categoria,
+                !estadosCategorias.get(categoria));
+    }
+
+    public boolean isCategoriaSelected(Categoria categoria) {
+        if(estadosCategorias==null){
+            estadosCategorias = new HashMap<Categoria, Boolean>();
+        }
+
+        if(estadosCategorias.containsKey(categoria)){
+
+            return estadosCategorias.get(categoria);
+
+        }else{
+            estadosCategorias.put(categoria,false);
+            return isCategoriaSelected(categoria);
+        }
+    }
+
+    public String getCategoriaKey(Categoria categoria){
+        return "KEY_CATEGORIA_".concat(categoria.toString());
+    }
+
     public boolean isYourHere() {
         return yourHere;
     }
 
     public void setYourHere(boolean yourHere) {
         this.yourHere = yourHere;
-    }
-
-    public boolean isShowRestaurants() {
-        return showRestaurants;
-    }
-
-    public void setShowRestaurants(boolean showRestaurants) {
-        this.showRestaurants = showRestaurants;
-    }
-
-    public boolean isShowHotels() {
-        return showHotels;
-    }
-
-    public void setShowHotels(boolean showHotels) {
-        this.showHotels = showHotels;
     }
 
     public boolean isShowAll() {
