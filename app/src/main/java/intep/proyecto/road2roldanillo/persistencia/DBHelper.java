@@ -4,64 +4,121 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import intep.proyecto.road2roldanillo.entidades.db.CategoriaDB;
+import intep.proyecto.road2roldanillo.entidades.db.Comentario;
+import intep.proyecto.road2roldanillo.entidades.db.Foto;
+import intep.proyecto.road2roldanillo.entidades.db.Lugar;
+import intep.proyecto.road2roldanillo.entidades.db.LugarUsuario;
+import intep.proyecto.road2roldanillo.entidades.db.UltimaActualizacion;
+import intep.proyecto.road2roldanillo.entidades.db.Usuario;
+import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "road2roldanillo.sqlite";
 
-    private static final int DB_SCHEME_VERSION = 1;
+    private static final int DB_SCHEME_VERSION = 9;
 
-    private static final String TABLA_CATEGORIA = "CREATE TABLE categoria" +
-            "(id INTEGER PRIMARY KEY, nombre TEXT, subido INT, icono TEXT)";
+    private final Class[] classes;
 
-    private static final String TABLA_USUARIO = "CREATE TABLE usuario" +
-            "(id INTEGER PRIMARY KEY, usuario TEXT, nombres TEXT, apellidos TEXT)";
-
-    private static final String TABLA_LUGAR = "CREATE TABLE lugar" +
-            "(id INTEGER PRIMARY KEY, nombre TEXT, latitud REAL, longitud REAL, descripcion TEXT, puntaje REAL," +
-            "categoria INT, subido INT, direccion TEXT, telefono TEXT, sitio_web TEXT)";
-
-    private static final String TABLA_FOTO = "CREATE TABLE foto" +
-            "(id INTEGER PRIMARY KEY, foto TEXT, lugar INT)";
-
-    private static final String TABLA_COMENTARIO = "CREATE TABLE comentario" +
-            "(id INTEGER PRIMARY KEY, detalle TEXT, lugar INT, usuario INT, fecha TEXT, puntaje INT, subido INT)";
-
-    private static final String TABLA_LUGAR_USUARIO = "CREATE TABLE lugar_usuario" +
-            "(id_lugar_usuario INTEGER PRIMARY KEY, id_lugar INT, id_usuario INT, fecha TEXT)";
-
-    private static final String TABLA_ULTIMA_ACTUALIZACION = "CREATE TABLE ultima_actualizacion" +
-            "(fecha TEXT)";
+    private static final String TAG = DBHelper.class.getName();
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_SCHEME_VERSION);
+        Log.i(TAG, "Se instancia ".concat(TAG).concat(", y se carga el arreglo de clases"));
+        classes = new Class[]{
+                CategoriaDB.class,
+                Lugar.class,
+                Usuario.class,
+                Comentario.class,
+                Foto.class,
+                LugarUsuario.class,
+                UltimaActualizacion.class
+        };
     }
-
-    /*public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
-    }*/
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(TABLA_CATEGORIA);
-        sqLiteDatabase.execSQL(TABLA_USUARIO);
-        sqLiteDatabase.execSQL(TABLA_LUGAR);
-        sqLiteDatabase.execSQL(TABLA_FOTO);
-        sqLiteDatabase.execSQL(TABLA_COMENTARIO);
-        sqLiteDatabase.execSQL(TABLA_LUGAR_USUARIO);
-        sqLiteDatabase.execSQL(TABLA_ULTIMA_ACTUALIZACION);
-        //sqLiteDatabase.execSQL(DBManager.CREATE_TABLE);
+
+        onUpgrade(sqLiteDatabase,0,0);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_CATEGORIA);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_USUARIO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_LUGAR);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_FOTO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_COMENTARIO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_LUGAR_USUARIO);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+TABLA_ULTIMA_ACTUALIZACION);
-        onCreate(sqLiteDatabase);
+
+        Log.i(TAG,"Se eliminaran las tablas anteriores de la base de datos");
+
+        for (Class clase : classes){
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+clase.getSimpleName());
+        }
+
+        Log.i(TAG,"Se crea la base de datos");
+        List<String> consultas = getCreateSQL();
+        Log.i(TAG,"Se crearan "+consultas.size()+" tablas.");
+
+        for (String sqlTabla : consultas){
+            Log.i(TAG,"CREANDO TABLA: ".concat(sqlTabla));
+            sqLiteDatabase.execSQL(sqlTabla);
+        }
+
     }
+
+    private List<String> getCreateSQL() {
+
+
+
+        List<String> tablas = new ArrayList<String>();
+
+        for (Class clase : classes) {
+            String nombre = clase.getSimpleName();
+            List<String> campos = new ArrayList();
+            List<String> tipos = new ArrayList();
+            for (Field field : clase.getDeclaredFields()) {
+                campos.add(field.getName());
+                tipos.add(getSQLTipo(field.getType().getSimpleName()));
+            }
+            String sql = "CREATE TABLE ".concat(nombre).concat(" ( ");
+
+            Class superClass = clase.getSuperclass();
+            if(superClass!=null){
+                if(superClass.getSimpleName().equalsIgnoreCase(TablaHelper.class.getSimpleName())){
+                    sql += "id INTEGER PRIMARY KEY , ";
+                }
+            }
+
+            for (int i = 0; i < tipos.size(); i++) {
+                String tipo = tipos.get(i);
+                String campo = campos.get(i);
+                sql += campo.concat(" ").concat(tipo).concat(" ");
+                if (campo.equalsIgnoreCase("id")) {
+                    sql += "PRIMARY KEY ";
+                }
+                if (i + 1 < tipos.size()) {
+                    sql += ", ";
+                }
+            }
+            sql += ")";
+            tablas.add(sql);
+        }
+
+        return tablas;
+    }
+
+    private static String getSQLTipo(String classType){
+        if(classType.equalsIgnoreCase("string") || classType.equalsIgnoreCase("date")){
+            return "TEXT";
+        }else if(classType.equalsIgnoreCase("double") || classType.equalsIgnoreCase("float")){
+            return "REAL";
+        }else{
+            return "INTEGER";
+        }
+    }
+
 }
