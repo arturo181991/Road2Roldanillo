@@ -43,6 +43,7 @@ public class DescripcionFragment extends TabbedActivity.PlaceholderFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_descripcion, container, false);
 
+        //Comment
 
         TextView textViewNombre = (TextView) view.findViewById(R.id.textViewNombre);
         textViewNombre.setText(site.getNombres());
