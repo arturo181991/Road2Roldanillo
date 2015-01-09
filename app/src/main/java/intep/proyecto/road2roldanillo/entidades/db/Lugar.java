@@ -12,13 +12,13 @@ public class Lugar extends TablaHelper{
     private Double longitud;
     private String descripcion;
     private Float puntaje;
-    private CategoriaDB categoria;
+    private Categoria categoria;
     private int subido;
     private String direccion;
     private String telefono;
     private String sitioWeb;
 
-    public Lugar(int id, String nombre, Double latitud, Double longitud, String descripcion, Float puntaje, CategoriaDB categoria, int subido, String direccion, String telefono, String sitioWeb) {
+    public Lugar(int id, String nombre, Double latitud, Double longitud, String descripcion, Float puntaje, Categoria categoria, int subido, String direccion, String telefono, String sitioWeb) {
         super(id);
         this.nombre = nombre;
         this.latitud = latitud;
@@ -72,11 +72,11 @@ public class Lugar extends TablaHelper{
         this.puntaje = puntaje;
     }
 
-    public CategoriaDB getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(CategoriaDB categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 

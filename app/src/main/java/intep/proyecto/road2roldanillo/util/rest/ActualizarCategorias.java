@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import intep.proyecto.road2roldanillo.entidades.db.CategoriaDB;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 
 /**
@@ -32,7 +32,7 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     private static final String TAG = ActualizarCategorias.class.getSimpleName();
 
-    private List<CategoriaDB> categorias;
+    private List<Categoria> categorias;
 
     private Context context;
     private ListView listView;
@@ -40,7 +40,7 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
     public ActualizarCategorias(Context context, ListView listView){
         this.context = context;
         this.listView = listView;
-        categorias = new ArrayList<CategoriaDB>();
+        categorias = new ArrayList<Categoria>();
     }
 
     @Override
@@ -63,11 +63,11 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
             for (int i = 0; i<jsonArray.length(); i++){
                 JSONObject dato = jsonArray.getJSONObject(i);
 
-                Field[] campos = CategoriaDB.class.getDeclaredFields();
+                Field[] campos = Categoria.class.getDeclaredFields();
 
                 int idCategoria = dato.getInt("id");
 
-                CategoriaDB categoriaDB = new CategoriaDB(idCategoria);
+                Categoria categoriaDB = new Categoria(idCategoria);
 
                 for (Field field : campos){
 
@@ -124,13 +124,13 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     }
 
-    private boolean insertarCategorias(SQLiteDatabase db, List<CategoriaDB> categorias) {
+    private boolean insertarCategorias(SQLiteDatabase db, List<Categoria> categorias) {
 
         try {
 
             int registros = 0;
 
-            for (CategoriaDB categoriaDB : categorias){
+            for (Categoria categoriaDB : categorias){
                 if(categoriaDB.insert(db)!=-1){
                     registros++;
                 }

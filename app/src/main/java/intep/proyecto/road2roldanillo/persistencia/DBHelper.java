@@ -1,7 +1,6 @@
 package intep.proyecto.road2roldanillo.persistencia;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -10,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import intep.proyecto.road2roldanillo.entidades.db.CategoriaDB;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.entidades.db.Comentario;
 import intep.proyecto.road2roldanillo.entidades.db.Foto;
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
@@ -33,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_SCHEME_VERSION);
         Log.i(TAG, "Se instancia ".concat(TAG).concat(", y se carga el arreglo de clases"));
         classes = new Class[]{
-                CategoriaDB.class,
+                Categoria.class,
                 Lugar.class,
                 Usuario.class,
                 Comentario.class,

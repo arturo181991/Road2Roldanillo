@@ -5,17 +5,17 @@ import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 /**
  * Created by gurzaf on 1/7/15.
  */
-public class CategoriaDB extends TablaHelper {
+public class Categoria extends TablaHelper {
 
     private String nombre;
     private int borrado;
     private String icono;
 
-    public CategoriaDB(int id) {
+    public Categoria(int id) {
         super(id);
     }
 
-    public CategoriaDB(int id, String nombre, int borrado, String icono) {
+    public Categoria(int id, String nombre, int borrado, String icono) {
         super(id);
         this.nombre = nombre;
         this.borrado = borrado;
@@ -48,7 +48,7 @@ public class CategoriaDB extends TablaHelper {
 
     @Override
     public String toString() {
-        return "CategoriaDB{" +
+        return "Categoria{" +
                 "nombre='" + nombre + '\'' +
                 ", borrado=" + borrado +
                 ", icono='" + icono + '\'' +
