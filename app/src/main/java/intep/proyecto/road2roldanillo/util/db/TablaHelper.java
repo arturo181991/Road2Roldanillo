@@ -13,26 +13,7 @@ import java.lang.reflect.Method;
  */
 public class TablaHelper {
 
-    private final String TAG = this.getClass().getSimpleName();
-
-    private Integer id;
-
-    public TablaHelper(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return id.toString();
-    }
+    protected final String TAG = this.getClass().getSimpleName();
 
     public ContentValues getContent(){
 
@@ -81,9 +62,7 @@ public class TablaHelper {
     public long insert(SQLiteDatabase db){
         Log.i(TAG,"Ejecutando método INSERT a la entidad "
                 .concat(this.getClass().getSimpleName())
-                .concat("[")
-                .concat(id.toString())
-                .concat("]"));
+                .concat(this.toString()));
         return db.insert(this.getClass().getSimpleName(),null,getContent());
     }
 

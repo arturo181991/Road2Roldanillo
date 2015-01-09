@@ -1,31 +1,30 @@
 package intep.proyecto.road2roldanillo.util;
 
 import android.content.Context;
-import android.media.Image;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.R;
-import intep.proyecto.road2roldanillo.entidades.Categoria;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
+import intep.proyecto.road2roldanillo.rest.ImageHelper;
 
 /**
  * Created by gurzaf on 12/23/14.
  */
-public class NavigatioDrawerListAdapter extends ArrayAdapter<Categoria> {
+public class CategoriaDrawerListAdapter extends ArrayAdapter<Categoria> {
 
-    public NavigatioDrawerListAdapter(Context context, int resource) {
+    public CategoriaDrawerListAdapter(Context context, int resource) {
         super(context, resource);
     }
 
-    public NavigatioDrawerListAdapter(Context context, int resource, Categoria[] items) {
+    public CategoriaDrawerListAdapter(Context context, int resource, List<Categoria> items) {
         super(context, resource, items);
     }
 
@@ -52,7 +51,14 @@ public class NavigatioDrawerListAdapter extends ArrayAdapter<Categoria> {
             }
 
             if (imageView != null) {
-                imageView.setImageResource(categoria.getResourceIcon());
+
+                Bitmap bm = ImageHelper.getImageForCategoria(categoria,getContext());
+                if(bm==null){
+                    imageView.setImageResource(R.drawable.me);
+                }else{
+                    imageView.setImageBitmap(bm);
+                }
+
             }
         }
 

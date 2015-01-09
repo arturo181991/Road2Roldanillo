@@ -2,16 +2,19 @@ package intep.proyecto.road2roldanillo;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.util.rest.ActualizarCategorias;
 
 
-public class Categorias extends ActionBarActivity {
+public class ActualizarDatos extends ActionBarActivity {
+
     private ListView lstCategorias;
     private Button botonListar;
 
@@ -22,12 +25,10 @@ public class Categorias extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categorias);
 
-
-        //dbHelper.onUpgrade(db,1,1);
-
         lstCategorias = (ListView)findViewById(R.id.lstCategorias);
         botonListar = (Button) findViewById(R.id.botonListar);
         eventos();
+
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Categorias extends ActionBarActivity {
 
     public void getCategorias(){
 
-        ActualizarCategorias actualizarCategorias = new ActualizarCategorias(this,lstCategorias);
+        ActualizarCategorias actualizarCategorias = new ActualizarCategorias(this,lstCategorias, Categoria.class);
         actualizarCategorias.execute();
 
     }

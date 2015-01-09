@@ -1,11 +1,12 @@
 package intep.proyecto.road2roldanillo.entidades.db;
 
+import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
  * Created by gurzaf on 1/7/15.
  */
-public class Categoria extends TablaHelper {
+public class Categoria extends TablaEntidadHelper {
 
     private String nombre;
     private int borrado;

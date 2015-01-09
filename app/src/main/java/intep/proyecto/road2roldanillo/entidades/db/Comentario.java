@@ -2,12 +2,13 @@ package intep.proyecto.road2roldanillo.entidades.db;
 
 import java.util.Date;
 
+import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
  * Created by gurzaf on 1/7/15.
  */
-public class Comentario extends TablaHelper{
+public class Comentario extends TablaEntidadHelper{
 
     private String detalle;
     private Lugar lugar;

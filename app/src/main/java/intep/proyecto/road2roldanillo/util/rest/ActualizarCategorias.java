@@ -8,22 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
+import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
+import intep.proyecto.road2roldanillo.rest.ImageHelper;
+import intep.proyecto.road2roldanillo.rest.RESTHelper;
+import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
+import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
+import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
  * Created by gurzaf on 1/7/15.
@@ -32,72 +28,46 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     private static final String TAG = ActualizarCategorias.class.getSimpleName();
 
-    private List<Categoria> categorias;
+    private List entidades;
 
     private Context context;
     private ListView listView;
+    private Class subClass;
 
-    public ActualizarCategorias(Context context, ListView listView){
+    public<T extends TablaHelper> ActualizarCategorias(Context context, ListView listView, Class<T> subClass){
         this.context = context;
         this.listView = listView;
-        categorias = new ArrayList<Categoria>();
+        this.subClass = subClass;
     }
 
     @Override
     protected Boolean doInBackground(String... strings) {
 
-        HttpClient httpClient = new DefaultHttpClient();
+        JSONArray jsonArray = RESTHelper.getJSONCategorias();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE,-10);
+        if(jsonArray!=null && jsonArray.length()>0){
 
-        Long horaTimeStamp = calendar.getTimeInMillis();
+            entidades = RESTHelper.getListadoEntidades(subClass,jsonArray);
 
-        HttpGet httpGet = new HttpGet("http://192.168.1.2:8080/Road2RoldanilloWS/datos/categoria/get/"+ horaTimeStamp);
-        httpGet.setHeader("content-type", "application/json");
+            if(entidades!=null && !entidades.isEmpty()){
 
-        try {
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            String respStr = EntityUtils.toString(httpResponse.getEntity());
-            JSONArray jsonArray = new JSONArray(respStr);
-            for (int i = 0; i<jsonArray.length(); i++){
-                JSONObject dato = jsonArray.getJSONObject(i);
-
-                Field[] campos = Categoria.class.getDeclaredFields();
-
-                int idCategoria = dato.getInt("id");
-
-                Categoria categoriaDB = new Categoria(idCategoria);
-
-                for (Field field : campos){
-
-                    Object value = null;
-                    String typeName = field.getType().getSimpleName();
-                    if(typeName.equals("String")){
-                        value = dato.getString(field.getName());
-                    }else if(typeName.equalsIgnoreCase("double")){
-                        value = dato.getDouble(field.getName());
-                    }else if(typeName.equalsIgnoreCase("float")){
-                        value = new Double(dato.getDouble(field.getName())).floatValue();
-                    }else if(typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")){
-                        value = dato.getInt(field.getName());
+                for (Object entidad : entidades){
+                    if(entidad instanceof Categoria){
+                        if(!ImageHelper.saveImageForCategoria((Categoria) entidad, context)){
+                            entidades = null;
+                            return false;
+                        }
                     }
-
-
-                    Method method = categoriaDB.obtainSetMethod(field);
-                    if(method!=null && value!=null){
-                        categoriaDB.putValue(method,value);
-                    }
-
                 }
 
-                categorias.add(categoriaDB);
+            }else{
+                entidades = null;
+                return false;
             }
 
             return true;
-
-        }catch (Exception exc){
-            exc.printStackTrace();
+        }else{
+            entidades = null;
             return false;
         }
 
@@ -106,14 +76,15 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
 
-        if(aBoolean && !categorias.isEmpty()) {
+        if(aBoolean && entidades!=null) {
 
-            Toast.makeText(context, "Arreglo de categorias-> " + categorias, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Arreglo de categorias-> " + entidades.size(), Toast.LENGTH_SHORT).show();
 
             DBHelper dbHelper = new DBHelper(context);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            if(insertarCategorias(db, categorias)){
-                ArrayAdapter<Object> adaptador = new ArrayAdapter<Object>(context, android.R.layout.simple_list_item_1, categorias.toArray());
+
+            if(insertarRegistros(db, entidades)){
+                CategoriaDrawerListAdapter adaptador = new CategoriaDrawerListAdapter(context, R.layout.menu_item_row,entidades);
                 listView.setAdapter(adaptador);
             }else{
                 Toast.makeText(context,"Error XD",Toast.LENGTH_LONG).show();
@@ -124,23 +95,28 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     }
 
-    private boolean insertarCategorias(SQLiteDatabase db, List<Categoria> categorias) {
+    private boolean insertarRegistros(SQLiteDatabase db, List entidades) {
 
         try {
 
             int registros = 0;
 
-            for (Categoria categoriaDB : categorias){
-                if(categoriaDB.insert(db)!=-1){
-                    registros++;
+            for (Object entidad: entidades){
+                if(entidad instanceof TablaHelper){
+                    if(((TablaHelper)entidad).insert(db)!=-1){
+                        registros++;
+                    }
                 }
             }
 
-            Log.i(TAG,"Se insertaron "+registros+" categorias.");
+            Log.i(TAG,"Se insertaron "+registros+".");
             return true;
+
         }catch (Exception e){
+
             Log.e(TAG,"Error insertando las categorias",e);
             return false;
+
         }
 
     }

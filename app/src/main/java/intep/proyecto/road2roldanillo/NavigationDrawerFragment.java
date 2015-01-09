@@ -18,17 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import intep.proyecto.road2roldanillo.entidades.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
-import intep.proyecto.road2roldanillo.util.NavigatioDrawerListAdapter;
+import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
+import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -81,8 +78,8 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        NavigatioDrawerListAdapter navigatioDrawerListAdapter =
-                new NavigatioDrawerListAdapter(getActionBar().getThemedContext(),
+        NavigationDrawerListAdapter navigatioDrawerListAdapter =
+                new NavigationDrawerListAdapter(getActionBar().getThemedContext(),
                         R.layout.menu_item_row, Categoria.values());
 
         mDrawerListView.setAdapter(navigatioDrawerListAdapter);

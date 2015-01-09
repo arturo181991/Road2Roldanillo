@@ -1,9 +1,11 @@
 package intep.proyecto.road2roldanillo.entidades.db;
 
+import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
+
 /**
  * Created by gurzaf on 1/7/15.
  */
-public class Usuario {
+public class Usuario extends TablaEntidadHelper {
 
     private int id;
     private String usuario;
@@ -11,19 +13,10 @@ public class Usuario {
     private String apellidos;
 
     public Usuario(int id, String usuario, String nombres, String apellidos) {
-        this.id = id;
+        super(id);
         this.usuario = usuario;
         this.nombres = nombres;
         this.apellidos = apellidos;
-    }
-
-    public int getId() {
-
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUsuario() {
