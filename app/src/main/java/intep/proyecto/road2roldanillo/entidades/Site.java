@@ -1,6 +1,7 @@
 package intep.proyecto.road2roldanillo.entidades;
 
 import java.io.Serializable;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 
 /**
  * Created by gurzaf on 12/3/14.

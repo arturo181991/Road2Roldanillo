@@ -7,7 +7,6 @@ import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
  */
 public class Usuario extends TablaEntidadHelper {
 
-    private int id;
     private String usuario;
     private String nombres;
     private String apellidos;

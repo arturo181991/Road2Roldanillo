@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,14 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import intep.proyecto.road2roldanillo.entidades.Categoria;
+import java.util.List;
+
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
+import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
 import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
 
 public class NavigationDrawerFragment extends Fragment {
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    private static final String TAG = NavigationDrawerFragment.class.getSimpleName();
 
     private NavigationDrawerCallbacks mCallbacks;
 
@@ -43,12 +48,17 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mUserLearnedDrawer;
     private MapHelper mapHelper;
 
+    private DBHelper dbHelper;
+    private List<Categoria> categorias;
+
     public NavigationDrawerFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dbHelper = new DBHelper(getActivity().getApplicationContext());
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
@@ -78,9 +88,12 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        NavigationDrawerListAdapter navigatioDrawerListAdapter =
-                new NavigationDrawerListAdapter(getActionBar().getThemedContext(),
-                        R.layout.menu_item_row, Categoria.values());
+        categorias = Categoria.getAllValues(dbHelper.getReadableDatabase());
+        Log.i(TAG,"Cantidad de Categorias: "+categorias.size());
+
+        CategoriaDrawerListAdapter navigatioDrawerListAdapter =
+                new CategoriaDrawerListAdapter(getActionBar().getThemedContext(),
+                        R.layout.menu_item_row, categorias);
 
         mDrawerListView.setAdapter(navigatioDrawerListAdapter);
         return mDrawerListView;
@@ -158,7 +171,7 @@ public class NavigationDrawerFragment extends Fragment {
     private void selectItem(int position) {
         if (mDrawerListView != null) {
             LinearLayout viewRow = (LinearLayout) mDrawerListView.getChildAt(position);
-            Categoria categoria = Categoria.values()[position];
+            Categoria categoria = categorias.get(position);
             if(mapHelper.isCategoriaSelected(categoria)){
                 viewRow.setBackgroundColor(getResources().getColor(R.color.no_selected));
             }else{
@@ -215,11 +228,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 

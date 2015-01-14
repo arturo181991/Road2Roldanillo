@@ -1,5 +1,14 @@
 package intep.proyecto.road2roldanillo.entidades.db;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+
+import java.util.List;
+
+import intep.proyecto.road2roldanillo.persistencia.DBHelper;
+import intep.proyecto.road2roldanillo.rest.ImageHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
@@ -47,12 +56,17 @@ public class Categoria extends TablaEntidadHelper {
         this.icono = icono;
     }
 
+    public Bitmap getIconoBitMap(Context context){
+        return ImageHelper.getImageForCategoria(this,context);
+    }
+
     @Override
     public String toString() {
-        return "Categoria{" +
-                "nombre='" + nombre + '\'' +
-                ", borrado=" + borrado +
-                ", icono='" + icono + '\'' +
-                '}';
+        return nombre;
     }
+
+    public static List<Categoria> getAllValues(SQLiteDatabase db){
+        return (List<Categoria>) TablaEntidadHelper.getAllValues(Categoria.class.getSimpleName(),Categoria.class,db);
+    }
+
 }

@@ -1,33 +1,18 @@
 package intep.proyecto.road2roldanillo;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Marker;
 
-import java.util.Map;
-
-import intep.proyecto.road2roldanillo.entidades.Categoria;
-import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 
 
@@ -88,7 +73,7 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(Categoria categoria) {
 
         if(mapHelper.isCategoriaSelected(categoria)) {
-            mapHelper.initializeSites(mMap, categoria);
+            mapHelper.initializeSites(mMap, categoria,getApplicationContext());
         }else{
             mapHelper.hideSites(categoria);
         }

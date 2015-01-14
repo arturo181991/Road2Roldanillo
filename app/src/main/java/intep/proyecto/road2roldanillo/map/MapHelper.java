@@ -3,6 +3,7 @@ package intep.proyecto.road2roldanillo.map;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -32,8 +33,8 @@ import java.util.Map;
 import intep.proyecto.road2roldanillo.MainActivity;
 import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.TabbedActivity;
-import intep.proyecto.road2roldanillo.entidades.Categoria;
 import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.util.DataHelper;
 
 /**
@@ -141,7 +142,7 @@ public class MapHelper {
 
     }
 
-    public void initializeSites(GoogleMap map, Categoria categoria){
+    public void initializeSites(GoogleMap map, Categoria categoria, Context context){
 
         if(sites==null){
             sites = new HashMap<Marker, Site>();
@@ -158,7 +159,13 @@ public class MapHelper {
                     .position(new LatLng(site.getLatitud(), site.getLongitud()))
                     .snippet(site.getDetalle());
 
-            markerOption.icon(site.getCategoria().getBitMapDescriptor());
+            Bitmap bm = site.getCategoria().getIconoBitMap(context);
+            if(bm==null){
+                markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
+            }else{
+                markerOption.icon(BitmapDescriptorFactory.fromBitmap(bm));
+            }
+
 
             Marker marker = map.addMarker(markerOption);
             sites.put(marker,site);
