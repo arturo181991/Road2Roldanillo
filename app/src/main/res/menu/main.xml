@@ -4,4 +4,8 @@
     tools:context="intep.proyecto.road2roldanillo.MainActivity">
     <item android:id="@+id/action_update" android:title="@string/title_activity_update"
         android:orderInCategory="100" />
+    <item android:id="@+id/action_findme" android:title="@string/title_findme"
+        android:orderInCategory="200" />
+    <item android:id="@+id/action_login" android:title="@string/title_login"
+        android:orderInCategory="300" />
 </menu>

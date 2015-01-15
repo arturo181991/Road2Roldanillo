@@ -109,6 +109,10 @@ public class MainActivity extends ActionBarActivity
             Intent i = new Intent(this,ActualizarDatos.class);
             startActivity(i);
             return true;
+        }else if(id == R.id.action_login){
+            Intent intentLogin = new Intent(this, LoginGooglePlus.class);
+            startActivity(intentLogin);
+            return true;
         }
 
         if (id == R.id.action_settings) {

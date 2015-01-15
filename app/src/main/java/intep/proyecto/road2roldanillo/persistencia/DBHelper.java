@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "road2roldanillo.sqlite";
 
-    private static final int DB_SCHEME_VERSION = 14;
+    private static final int DB_SCHEME_VERSION = 15;
 
     private final Class[] classes;
 
