@@ -1,6 +1,36 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:choiceMode="multipleChoice"
-    android:divider="@android:color/transparent" android:dividerHeight="0dp"
-    android:background="@color/bg_color"
-    tools:context="intep.proyecto.road2roldanillo.NavigationDrawerFragment" />
+<LinearLayout
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="@color/bg_color">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="7">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageCover" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/imagePerfil"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:choiceMode="multipleChoice"
+        android:divider="@android:color/transparent" android:dividerHeight="0dp"
+        android:background="@color/bg_color"
+        tools:context="intep.proyecto.road2roldanillo.NavigationDrawerFragment"
+        android:id="@+id/listadoCategorias"
+        android:layout_weight="3" />
+
+</LinearLayout>

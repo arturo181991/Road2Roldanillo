@@ -23,6 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.PlusClient;
+
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
@@ -31,7 +37,8 @@ import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
 import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
 
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment
+        implements GooglePlayServicesClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     private static final String TAG = NavigationDrawerFragment.class.getSimpleName();
@@ -51,6 +58,8 @@ public class NavigationDrawerFragment extends Fragment {
     private DBHelper dbHelper;
     private List<Categoria> categorias;
 
+    private PlusClient plusClient;
+
     public NavigationDrawerFragment() {
     }
 
@@ -62,6 +71,9 @@ public class NavigationDrawerFragment extends Fragment {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+
+        plusClient = new PlusClient.Builder(getActivity().getApplicationContext(), this, this)
+                .build();
 
         if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
@@ -79,8 +91,10 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.fragment_navigation_drawer, container, false);
+
+        LinearLayout linearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_navigation_drawer,container,false);
+
+        mDrawerListView = (ListView)linearLayout.findViewById(R.id.listadoCategorias);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -96,7 +110,7 @@ public class NavigationDrawerFragment extends Fragment {
                         R.layout.menu_item_row, categorias);
 
         mDrawerListView.setAdapter(navigatioDrawerListAdapter);
-        return mDrawerListView;
+        return linearLayout;
     }
 
     public boolean isDrawerOpen() {
@@ -245,7 +259,34 @@ public class NavigationDrawerFragment extends Fragment {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
     public static interface NavigationDrawerCallbacks {
         void onNavigationDrawerItemSelected(Categoria categoria);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        plusClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        plusClient.disconnect();
     }
 }
