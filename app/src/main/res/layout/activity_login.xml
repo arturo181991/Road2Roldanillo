@@ -3,13 +3,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="intep.proyecto.road2roldanillo.LoginGooglePlus">
+    tools:context="intep.proyecto.road2roldanillo.LoginGooglePlus"
+    android:weightSum="1"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
+        android:text="@string/bienvenido"
+        android:id="@+id/labelBienenido"
+        android:layout_weight="0"
+        android:layout_marginTop="20dp"
+        style="@style/fuente_bienvenido"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.8"
+        android:weightSum="10">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView4"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo"
+            android:layout_weight="@integer/height_logo_bienvenido" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1"
+            android:layout_weight="@integer/height_texto_bienvenido"
+            android:visibility="gone"
+            android:id="@+id/contenedorInfoBienvenido">
+
+            <TextView
+                style="@style/fuente_bienvenido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sabias_que"
+                android:id="@+id/textView3"
+                android:gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/text0_bienvenida"
+                android:id="@+id/textView2"
+                android:layout_weight="0.9"
+                style="@style/fuente_text_bienvenido"
+                android:gravity="center_vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:baselineAligned="false"
+        android:layout_weight="0.1"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:id="@+id/contenedorLoginBienvenido">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/omitir"
+                android:id="@+id/button"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/bg_color" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </LinearLayout>

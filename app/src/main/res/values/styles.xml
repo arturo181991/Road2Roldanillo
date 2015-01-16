@@ -7,6 +7,15 @@
         <item name="android:maxHeight">15dp</item>
     </style>
 
+    <style name="fuente_bienvenido">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="fuente_text_bienvenido">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
 
 </resources>
