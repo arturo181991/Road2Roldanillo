@@ -13,15 +13,17 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imageCover" />
+            android:id="@+id/imageCover"
+            android:scaleType="centerCrop" />
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
             android:id="@+id/imagePerfil"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10sp" />
     </RelativeLayout>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"

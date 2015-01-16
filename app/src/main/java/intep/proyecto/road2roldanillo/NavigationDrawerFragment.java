@@ -1,5 +1,9 @@
 package intep.proyecto.road2roldanillo;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -19,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,7 +33,10 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.PlusClient;
+import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.PersonBuffer;
 
+import java.io.InputStream;
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
@@ -38,7 +46,9 @@ import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
 import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
 
 public class NavigationDrawerFragment extends Fragment
-        implements GooglePlayServicesClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        implements GooglePlayServicesClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        PlusClient.OnPeopleLoadedListener{
 
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     private static final String TAG = NavigationDrawerFragment.class.getSimpleName();
@@ -50,6 +60,9 @@ public class NavigationDrawerFragment extends Fragment
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
+
+    private ImageView imageCover;
+    private ImageView imagePerfil;
 
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
@@ -101,6 +114,9 @@ public class NavigationDrawerFragment extends Fragment
                 selectItem(position);
             }
         });
+
+        imageCover = (ImageView) linearLayout.findViewById(R.id.imageCover);
+        imagePerfil = (ImageView) linearLayout.findViewById(R.id.imagePerfil);
 
         categorias = Categoria.getAllValues(dbHelper.getReadableDatabase());
         Log.i(TAG,"Cantidad de Categorias: "+categorias.size());
@@ -261,7 +277,7 @@ public class NavigationDrawerFragment extends Fragment
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        plusClient.loadPeople(this,"me");
     }
 
     @Override
@@ -272,6 +288,17 @@ public class NavigationDrawerFragment extends Fragment
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onPeopleLoaded(ConnectionResult connectionResult, PersonBuffer persons, String s) {
+        if(connectionResult.getErrorCode()==ConnectionResult.SUCCESS){
+            Person person = persons.get(0);
+
+            new LoadProfileImage(imageCover).execute(person.getCover().getCoverPhoto().getUrl());
+            new LoadProfileImage(imagePerfil).execute(person.getImage().getUrl());
+
+        }
     }
 
     public static interface NavigationDrawerCallbacks {
@@ -289,4 +316,30 @@ public class NavigationDrawerFragment extends Fragment
         super.onStop();
         plusClient.disconnect();
     }
+
+    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public LoadProfileImage(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }
+
 }
