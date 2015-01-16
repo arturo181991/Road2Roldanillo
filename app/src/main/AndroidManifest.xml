@@ -19,9 +19,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyB-Q7_BnxJBCZ0L0v7RunCKBwhn69U_SGA" />
-        <meta-data
-            android:name="com.google.android.accounts.API_KEY"
-            android:value="AIzaSyB-Q7_BnxJBCZ0L0v7RunCKBwhn69U_SGA" />
 
         <activity
             android:name=".TabbedActivity"
