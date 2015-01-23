@@ -7,6 +7,7 @@ import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class LoginGooglePlus extends Activity implements GooglePlayServicesClien
         PlusClient.OnPeopleLoadedListener{
 
     private SignInButton btnSignIn;
+    private Button botonOmitir;
     private PlusClient plusClient;
     private ProgressDialog connectionProgressDialog;
     private ConnectionResult connectionResult;
@@ -36,6 +38,8 @@ public class LoginGooglePlus extends Activity implements GooglePlayServicesClien
         setContentView(R.layout.activity_login);
 
         btnSignIn = (SignInButton) findViewById(R.id.sign_in_button);
+
+        botonOmitir = (Button) findViewById(R.id.boton_omitir);
 
         mResolveOnFail = false;
 
@@ -64,6 +68,14 @@ public class LoginGooglePlus extends Activity implements GooglePlayServicesClien
                     }
                 }
 
+            }
+        });
+
+        botonOmitir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginGooglePlus.this, MainActivity.class);
+                startActivity(intent);
             }
         });
     }

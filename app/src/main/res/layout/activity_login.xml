@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/text0_bienvenida"
+                android:text="@string/texto_bienvenida"
                 android:id="@+id/textView2"
                 android:layout_weight="0.9"
                 style="@style/fuente_text_bienvenido"
@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/omitir"
-                android:id="@+id/button"
+                android:id="@+id/boton_omitir"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/bg_color" />
         </LinearLayout>
