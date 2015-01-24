@@ -8,15 +8,19 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.util.Constantes;
+import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
@@ -55,6 +59,17 @@ public class RESTHelper {
         return getObjects(url);
     }
 
+    public static JSONArray getJSONLugares(){
+        String url = Constantes.concatPath(
+                Constantes.BASE_PATH,
+                Constantes.LUGARES_PATH,
+                Constantes.getTimeStampAsString());
+        Log.i(TAG,"Se generó la URL para obtener los datos JSON de los lugares");
+        JSONArray array = getObjects(url);
+        Log.i(TAG,array.toString());
+        return array;
+    }
+
 
     public static <T extends TablaHelper> List<T> getListadoEntidades(Class<T> subClass, JSONArray jsonArray){
         try {
@@ -72,16 +87,8 @@ public class RESTHelper {
 
                 Log.i(TAG,"Se obtienen los campos de la clase: ".concat(subClass.getSimpleName()));
 
-                T entity=null;
-
-                for (Constructor constructor : subClass.getConstructors()) {
-                    if(constructor.getParameterTypes().length==1 && constructor.getParameterTypes()[0].equals(int.class)){
-                        int id = dato.getInt("id");
-                        entity = (T) constructor.newInstance(id);
-                        Log.i(TAG,"Se instancia el objecto usando ID");
-                        break;
-                    }
-                }
+                int id = dato.getInt("id");
+                T entity=newInstance(subClass,dato);
 
                 if(entity==null){
                     entity = subClass.newInstance();
@@ -90,21 +97,27 @@ public class RESTHelper {
 
                 for (Field field : campos){
 
-                    Object value = null;
-                    String typeName = field.getType().getSimpleName();
-                    if(typeName.equals("String")){
-                        value = dato.getString(field.getName());
-                    }else if(typeName.equalsIgnoreCase("double")){
-                        value = dato.getDouble(field.getName());
-                    }else if(typeName.equalsIgnoreCase("float")){
-                        value = new Double(dato.getDouble(field.getName())).floatValue();
-                    }else if(typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")){
-                        value = dato.getInt(field.getName());
-                    }
+                    if(field.getModifiers() != Modifier.PROTECTED) {
+                        Object value = null;
+                        String typeName = field.getType().getSimpleName();
+                        if (typeName.equals("String")) {
+                            value = dato.getString(field.getName());
+                        } else if (typeName.equalsIgnoreCase("double")) {
+                            value = dato.getDouble(field.getName());
+                        } else if (typeName.equalsIgnoreCase("float")) {
+                            value = new Double(dato.getDouble(field.getName())).floatValue();
+                        } else if (typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")) {
+                            value = dato.getInt(field.getName());
+                        } else if (field.getType().isAssignableFrom(TablaEntidadHelper.class)) {
+                            value = dato.getInt(field.getName());
+                            Class<T> c = (Class<T>) Class.forName(field.getType().getName());
+                            value = newInstance(c, id);
+                        }
 
-                    Method method = entity.obtainSetMethod(field);
-                    if(method!=null && value!=null){
-                        entity.putValue(method,value);
+                        Method method = entity.obtainSetMethod(field);
+                        if (method != null && value != null) {
+                            entity.putValue(method, value);
+                        }
                     }
 
                 }
@@ -122,6 +135,35 @@ public class RESTHelper {
             Log.i(TAG,"Error obteniendo la lista de entidades",e);
             return null;
         }
+    }
+
+    private static <T extends TablaHelper> T newInstance(Class<T> subClass, JSONObject dato) throws JSONException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor constructor = getIdConstructor(subClass);
+        if(constructor==null){
+            return null;
+        }
+        T entity = (T) constructor.newInstance(dato.getInt("id"));
+        Log.i(TAG,"Se instancia el objecto usando ID");
+        return entity;
+    }
+
+    private static <T extends TablaHelper> T newInstance(Class<T> subClass, int id) throws JSONException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor constructor = getIdConstructor(subClass);
+        if(constructor==null){
+            return null;
+        }
+        T entity = (T) constructor.newInstance(id);
+        Log.i(TAG,"Se instancia el objecto usando ID");
+        return entity;
+    }
+
+    private static <T extends TablaHelper> Constructor getIdConstructor(Class<T> subClass){
+        for (Constructor constructor : subClass.getConstructors()) {
+            if(constructor.getParameterTypes().length==1 && constructor.getParameterTypes()[0].equals(int.class)){
+                return constructor;
+            }
+        }
+        return null;
     }
 
 }

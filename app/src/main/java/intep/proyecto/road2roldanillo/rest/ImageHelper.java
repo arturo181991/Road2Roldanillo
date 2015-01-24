@@ -13,8 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
+import intep.proyecto.road2roldanillo.entidades.db.Foto;
+import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.util.Constantes;
 
 /**
@@ -81,6 +84,43 @@ public class ImageHelper {
         }
 
         Log.i(TAG,"Se crean todas las imagenes para la categoria");
+
+        return true;
+
+    }
+
+    public static boolean saveImageForLugar(String nombreLugar, List<Foto> fotos, Context context){
+
+        Log.i(TAG,"Obteniendo imagenes para el lugar: ".concat(nombreLugar));
+
+        Bitmap[] imagenes = new Bitmap[fotos.size()];
+        for (int i = 0; i<fotos.size(); i++){
+            Foto foto = fotos.get(i);
+
+            String url = Constantes.concatPath(Constantes.BASE_PATH,Constantes.LUGARES_IMAGES_PATH,foto.getFoto());
+
+            Log.i(TAG, "URL para la imagen del lugar: ".concat(foto.getLugar().getNombre())
+                    .concat(" ===> ").concat(url));
+            Bitmap bitmap = getBitmapFromURL(url);
+            if(bitmap==null){
+                Log.w(TAG,"No se encontró la imagen para el lugar");
+                return false;
+            }else{
+                imagenes[i] = bitmap;
+            }
+        }
+
+        for(int i=0; i<imagenes.length; i++){
+
+            String name = "lugar_"+i+"_".concat(nombreLugar);
+            Log.i(TAG,"Nombre de la imagen: ".concat(name));
+            if(!saveImageToInternalStorage(name,imagenes[i],context)){
+                Log.i(TAG,"No se pudo guardar una de las imagenes");
+                return false;
+            }
+        }
+
+        Log.i(TAG,"Se crean todas las imagenes para el lugar");
 
         return true;
 

@@ -118,6 +118,12 @@ public class NavigationDrawerFragment extends Fragment
         imageCover = (ImageView) linearLayout.findViewById(R.id.imageCover);
         imagePerfil = (ImageView) linearLayout.findViewById(R.id.imagePerfil);
 
+        cargarCategorias();
+
+        return linearLayout;
+    }
+
+    public void cargarCategorias() {
         categorias = Categoria.getAllValues(dbHelper.getReadableDatabase());
         Log.i(TAG,"Cantidad de Categorias: "+categorias.size());
 
@@ -126,7 +132,6 @@ public class NavigationDrawerFragment extends Fragment
                         R.layout.menu_item_row, categorias);
 
         mDrawerListView.setAdapter(navigatioDrawerListAdapter);
-        return linearLayout;
     }
 
     public boolean isDrawerOpen() {
@@ -199,6 +204,7 @@ public class NavigationDrawerFragment extends Fragment
     }
 
     private void selectItem(int position) {
+
         if (mDrawerListView != null) {
             LinearLayout viewRow = (LinearLayout) mDrawerListView.getChildAt(position);
             Categoria categoria = categorias.get(position);
@@ -340,6 +346,7 @@ public class NavigationDrawerFragment extends Fragment
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+        
     }
 
 }

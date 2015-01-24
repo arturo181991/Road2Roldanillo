@@ -3,6 +3,7 @@ package intep.proyecto.road2roldanillo.map;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -35,7 +36,8 @@ import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.TabbedActivity;
 import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
-import intep.proyecto.road2roldanillo.util.DataHelper;
+import intep.proyecto.road2roldanillo.entidades.db.Lugar;
+import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 
 /**
  * Created by gurzaf on 12/23/14.
@@ -58,11 +60,13 @@ public class MapHelper {
     private Map<Categoria,Boolean> estadosCategorias;
 
     private Marker miUbicacion;
-    private Map<Marker,Site> sites;
+    private Map<Marker,Lugar> lugares;
+
+    private DBHelper dbHelper;
 
 
-    public MapHelper(){
-
+    public MapHelper(Context context){
+        dbHelper = new DBHelper(context);
     }
 
     public void setUpMap(final GoogleMap mMap,
@@ -80,24 +84,24 @@ public class MapHelper {
             @Override
             public View getInfoContents(Marker marker) {
 
-                Site site;
+                Lugar site;
 
-                if(sites!=null && sites.containsKey(marker)){
-                    site = sites.get(marker);
+                if(lugares!=null && lugares.containsKey(marker)){
+                    site = lugares.get(marker);
                 }else{
                     return null;
                 }
 
                 View v = layoutInflater.inflate(R.layout.custom_info_contents, null);
                 TextView nombreSite = (TextView) v.findViewById(R.id.title);
-                nombreSite.setText(site.getNombres());
+                nombreSite.setText(site.getNombre());
 
                 TextView address = (TextView) v.findViewById(R.id.address);
                 address.setText(site.getDireccion());
 
 
                 RatingBar ratingBar = (RatingBar) v.findViewById(R.id.starRating);
-                ratingBar.setRating(site.getRating());
+                ratingBar.setRating(site.getPuntaje());
                 return v;
 
             }
@@ -106,7 +110,7 @@ public class MapHelper {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if(sites!=null && sites.containsKey(marker)){
+                if(lugares!=null && lugares.containsKey(marker)){
                     marker.showInfoWindow();
                     return true;
                 }
@@ -118,11 +122,11 @@ public class MapHelper {
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                if(sites!=null && sites.containsKey(marker)){
-                    Site site = sites.get(marker);
+                if(lugares!=null && lugares.containsKey(marker)){
+                    Lugar lugar = lugares.get(marker);
                     Log.i("Click", "Dio click");
                     Intent intent = new Intent(mainActivity,TabbedActivity.class);
-                    intent.putExtra(KEY_SITE,site);
+                    intent.putExtra(KEY_SITE,lugar);
                     if(miUbicacion!=null){
                         intent.putExtra(KEY_MY_LOCATION,miUbicacion.getPosition());
                     }
@@ -144,22 +148,24 @@ public class MapHelper {
 
     public void initializeSites(GoogleMap map, Categoria categoria, Context context){
 
-        if(sites==null){
-            sites = new HashMap<Marker, Site>();
+        if(lugares==null){
+            lugares = new HashMap<Marker, Lugar>();
         }
 
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        for (Site site : DataHelper.getSites()) {
 
-            if(categoria!=null && categoria!=site.getCategoria()){
+        for (Lugar lugar : Lugar.getAllValuesByCategoria(db,categoria)) {
+
+            if(categoria!=null && categoria!=lugar.getCategoria()){
                 continue;
             }
 
-            MarkerOptions markerOption = new MarkerOptions().title(site.getNombres())
-                    .position(new LatLng(site.getLatitud(), site.getLongitud()))
-                    .snippet(site.getDetalle());
+            MarkerOptions markerOption = new MarkerOptions().title(lugar.getNombre())
+                    .position(new LatLng(lugar.getLatitud(), lugar.getLongitud()))
+                    .snippet(lugar.getDescripcion());
 
-            Bitmap bm = site.getCategoria().getIconoBitMap(context);
+            Bitmap bm = lugar.getCategoria().getIconoBitMap(context);
             if(bm==null){
                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
             }else{
@@ -168,24 +174,24 @@ public class MapHelper {
 
 
             Marker marker = map.addMarker(markerOption);
-            sites.put(marker,site);
+            lugares.put(marker,lugar);
 
         }
 
     }
 
     public void hideSites(Categoria categoria){
-        if (sites != null){
+        if (lugares != null){
             List<Marker> markers = new ArrayList<Marker>();
-            for (Marker marker : sites.keySet()){
-                if(categoria!=null && categoria!=sites.get(marker).getCategoria()){
+            for (Marker marker : lugares.keySet()){
+                if(categoria!=null && categoria!=lugares.get(marker).getCategoria()){
                     continue;
                 }
                 marker.remove();
                 markers.add(marker);
             }
             for(Marker marker : markers){
-                sites.remove(marker);
+                lugares.remove(marker);
             }
         }
     }
@@ -286,11 +292,11 @@ public class MapHelper {
         this.miUbicacion = miUbicacion;
     }
 
-    public Map<Marker, Site> getSites() {
-        return sites;
+    public Map<Marker, Lugar> getLugares() {
+        return lugares;
     }
 
-    public void setSites(Map<Marker, Site> sites) {
-        this.sites = sites;
+    public void setLugares(Map<Marker, Lugar> lugares) {
+        this.lugares = lugares;
     }
 }

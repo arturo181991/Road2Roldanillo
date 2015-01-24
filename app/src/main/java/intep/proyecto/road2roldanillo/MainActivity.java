@@ -1,5 +1,6 @@
 package intep.proyecto.road2roldanillo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,7 @@ public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "MainActivity";
+    private static final int ACTUALIZAR_CODE = 404;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
@@ -38,7 +40,7 @@ public class MainActivity extends ActionBarActivity
 
         mTitle = getTitle();
 
-        mapHelper = new MapHelper();
+        mapHelper = new MapHelper(this);
 
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
@@ -78,9 +80,7 @@ public class MainActivity extends ActionBarActivity
             mapHelper.hideSites(categoria);
         }
 
-
     }
-
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -88,7 +88,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,7 +106,7 @@ public class MainActivity extends ActionBarActivity
 
         if(id == R.id.action_update){
             Intent i = new Intent(this,ActualizarDatos.class);
-            startActivity(i);
+            startActivityForResult(i,ACTUALIZAR_CODE);
             return true;
         }else if(id == R.id.action_login){
             Intent intentLogin = new Intent(this, LoginGooglePlus.class);
@@ -120,6 +119,13 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==ACTUALIZAR_CODE && resultCode == Activity.RESULT_OK){
+            mNavigationDrawerFragment.cargarCategorias();
+        }
+    }
 }

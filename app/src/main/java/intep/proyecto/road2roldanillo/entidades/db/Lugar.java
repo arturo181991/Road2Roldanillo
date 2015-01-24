@@ -1,5 +1,12 @@
 package intep.proyecto.road2roldanillo.entidades.db;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.List;
+
+import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
@@ -14,12 +21,18 @@ public class Lugar extends TablaEntidadHelper{
     private String descripcion;
     private Float puntaje;
     private Categoria categoria;
-    private int subido;
+    private int borrado;
     private String direccion;
     private String telefono;
-    private String sitioWeb;
+    private String sitio;
 
-    public Lugar(int id, String nombre, Double latitud, Double longitud, String descripcion, Float puntaje, Categoria categoria, int subido, String direccion, String telefono, String sitioWeb) {
+    protected List<Foto> fotos;
+
+    public Lugar(int id){
+        super(id);
+    }
+
+    public Lugar(int id, String nombre, Double latitud, Double longitud, String descripcion, Float puntaje, Categoria categoria, int borrado, String direccion, String telefono, String sitioWeb) {
         super(id);
         this.nombre = nombre;
         this.latitud = latitud;
@@ -27,10 +40,10 @@ public class Lugar extends TablaEntidadHelper{
         this.descripcion = descripcion;
         this.puntaje = puntaje;
         this.categoria = categoria;
-        this.subido = subido;
+        this.borrado = borrado;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.sitioWeb = sitioWeb;
+        this.sitio = sitioWeb;
     }
 
     public String getNombre() {
@@ -81,12 +94,12 @@ public class Lugar extends TablaEntidadHelper{
         this.categoria = categoria;
     }
 
-    public int getSubido() {
-        return subido;
+    public int getBorrado() {
+        return borrado;
     }
 
-    public void setSubido(int subido) {
-        this.subido = subido;
+    public void setBorrado(int borrado) {
+        this.borrado = borrado;
     }
 
     public String getDireccion() {
@@ -105,11 +118,28 @@ public class Lugar extends TablaEntidadHelper{
         this.telefono = telefono;
     }
 
-    public String getSitioWeb() {
-        return sitioWeb;
+    public String getSitio() {
+        return sitio;
     }
 
-    public void setSitioWeb(String sitioWeb) {
-        this.sitioWeb = sitioWeb;
+    public void setSitio(String sitioWeb) {
+        this.sitio= sitioWeb;
     }
+
+    public List<Foto> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<Foto> fotos) {
+        this.fotos = fotos;
+    }
+
+    public static List<Lugar> getAllValuesByCategoria(SQLiteDatabase db, Categoria categoria){
+//        String[] args = new String[]{categoria.getId()+""};
+//        Log.i(Lugar.class.getSimpleName(),"");
+//        Cursor c = db.query(Lugar.class.getSimpleName(),null,"categoria=?",args,null,null,null);
+        Cursor c = db.query(Lugar.class.getSimpleName(),null,null,null,null,null,null);
+        return DBHelper.selectAll(Lugar.class, c);
+    }
+
 }

@@ -4,21 +4,23 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 
 import java.util.List;
 
+import intep.proyecto.road2roldanillo.ActualizarDatos;
 import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.rest.ImageHelper;
 import intep.proyecto.road2roldanillo.rest.RESTHelper;
-import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
-import intep.proyecto.road2roldanillo.util.NavigationDrawerListAdapter;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
@@ -30,13 +32,13 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     private List entidades;
 
-    private Context context;
-    private ListView listView;
+    private ActualizarDatos context;
+    private LinearLayout linearLayout;
     private Class subClass;
 
-    public<T extends TablaHelper> ActualizarCategorias(Context context, ListView listView, Class<T> subClass){
+    public<T extends TablaHelper> ActualizarCategorias(ActualizarDatos context, LinearLayout linearLayout, Class<T> subClass){
         this.context = context;
-        this.listView = listView;
+        this.linearLayout = linearLayout;
         this.subClass = subClass;
     }
 
@@ -84,8 +86,9 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             if(insertarRegistros(db, entidades)){
-                CategoriaDrawerListAdapter adaptador = new CategoriaDrawerListAdapter(context, R.layout.menu_item_row,entidades);
-                listView.setAdapter(adaptador);
+
+                Toast.makeText(context,"Se insertaron las categorias",Toast.LENGTH_SHORT).show();
+
             }else{
                 Toast.makeText(context,"Error XD",Toast.LENGTH_LONG).show();
             }
@@ -110,6 +113,23 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
             }
 
             Log.i(TAG,"Se insertaron "+registros+".");
+
+            final int resultado = registros;
+
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    TextView etiqueta = (TextView) context.getLayoutInflater().inflate(R.layout.label_actualizado, null);
+                    etiqueta.setTextAppearance(context,R.style.fuente_label_actualizado_categorias);
+                    etiqueta.setText("Se insertaron "+resultado+" Categoria(s).");
+                    linearLayout.addView(etiqueta);
+
+                }
+            });
+
+
+
             return true;
 
         }catch (Exception e){

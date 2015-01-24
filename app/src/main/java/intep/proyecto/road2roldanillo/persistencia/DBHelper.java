@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "road2roldanillo.sqlite";
 
-    private static final int DB_SCHEME_VERSION = 16;
+    private static final int DB_SCHEME_VERSION = 27;
 
     private final Class[] classes;
 
@@ -49,8 +49,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-//        onUpgrade(sqLiteDatabase,0,0);
-        createTables(sqLiteDatabase);
+        onUpgrade(sqLiteDatabase,0,0);
+//        createTables(sqLiteDatabase);
 
     }
 

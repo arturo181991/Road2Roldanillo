@@ -17,5 +17,20 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="fuente_label_actualizado">
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="fuente_label_actualizado_categorias" parent="fuente_label_actualizado">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@color/bg_categorias</item>
+    </style>
+
+    <style name="fuente_label_actualizado_lugares" parent="fuente_label_actualizado">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@color/bg_lugares</item>
+    </style>
+
 
 </resources>

@@ -4,14 +4,16 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by gurzaf on 1/7/15.
  */
-public class TablaHelper {
+public class TablaHelper implements Serializable {
 
     protected final String TAG = this.getClass().getSimpleName();
 
@@ -24,25 +26,27 @@ public class TablaHelper {
 
         for (Field field : fields) {
 
-            Log.i(TAG,"Campo: ".concat(field.getName()));
+            if(field.getModifiers()!= Modifier.PROTECTED){
+                Log.i(TAG,"Campo: ".concat(field.getName()));
 
-            Method method = obtainGetMethod(field);
+                Method method = obtainGetMethod(field);
 
-            Object value = null;
-            if(method!=null){
-                value = obtainValue(method);
-            }else{
-                Log.i(TAG,"No se encontró método para el campo");
-                continue;
-            }
+                Object value = null;
+                if(method!=null){
+                    value = obtainValue(method);
+                }else{
+                    Log.i(TAG,"No se encontró método para el campo");
+                    continue;
+                }
 
-            if(value!=null){
+                if(value!=null){
 
-                Log.i(TAG,"El valor es: ".concat(value.toString()));
+                    Log.i(TAG,"El valor es: ".concat(value.toString()));
 
-                values.put(field.getName(),value.toString());
-            }else{
-                Log.i(TAG,"No hay valor");
+                    values.put(field.getName(),value.toString());
+                }else{
+                    Log.i(TAG,"No hay valor");
+                }
             }
 
         }
