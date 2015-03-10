@@ -35,12 +35,21 @@
         </activity>
         <activity
             android:name=".LoginGooglePlus"
-            android:theme="@style/Theme.No_Action_bar"
-            android:label="@string/title_login" >
+            android:label="@string/title_login"
+            android:theme="@style/Theme.No_Action_bar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".preferences.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="intep.proyecto.road2roldanillo.MainActivity" />
         </activity>
     </application>
 

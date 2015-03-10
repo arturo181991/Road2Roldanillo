@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imageCover"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/cover" />
 
         <ImageView
             android:layout_width="50sp"
@@ -23,7 +24,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="10sp" />
+            android:layout_marginRight="10sp"
+            android:src="@drawable/profile" />
     </RelativeLayout>
 
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"

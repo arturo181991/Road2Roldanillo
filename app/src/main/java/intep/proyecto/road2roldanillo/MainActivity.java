@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
+import intep.proyecto.road2roldanillo.preferences.SettingsActivity;
 
 
 public class MainActivity extends ActionBarActivity
@@ -104,21 +105,22 @@ public class MainActivity extends ActionBarActivity
 
         int id = item.getItemId();
 
-        if(id == R.id.action_update){
-            Intent i = new Intent(this,ActualizarDatos.class);
-            startActivityForResult(i,ACTUALIZAR_CODE);
-            return true;
-        }else if(id == R.id.action_login){
-            Intent intentLogin = new Intent(this, LoginGooglePlus.class);
-            startActivity(intentLogin);
-            return true;
+        switch (id){
+            case R.id.action_update:
+                Intent i = new Intent(this,ActualizarDatos.class);
+                startActivityForResult(i,ACTUALIZAR_CODE);
+                return true;
+            case R.id.action_login:
+                Intent intentLogin = new Intent(this, LoginGooglePlus.class);
+                startActivity(intentLogin);
+                return true;
+            case R.id.action_settings:
+                Intent intentSettings = new Intent(this, SettingsActivity.class);
+                startActivity(intentSettings);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
 
     }
 

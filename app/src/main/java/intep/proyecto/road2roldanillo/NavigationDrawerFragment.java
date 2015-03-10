@@ -2,6 +2,7 @@ package intep.proyecto.road2roldanillo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -25,10 +26,12 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
@@ -297,8 +300,18 @@ public class NavigationDrawerFragment extends Fragment
         if(connectionResult.getErrorCode()==ConnectionResult.SUCCESS){
             Person person = persons.get(0);
 
-            new LoadProfileImage(imageCover).execute(person.getCover().getCoverPhoto().getUrl());
-            new LoadProfileImage(imagePerfil).execute(person.getImage().getUrl());
+            try {
+                new LoadProfileImage(imageCover).execute(person.getCover().getCoverPhoto().getUrl());
+            }catch (Exception e){
+                Log.e(TAG,"No tiene imagen de portada",e);
+            }
+
+            try {
+                new LoadProfileImage(imagePerfil).execute(person.getImage().getUrl());
+            }catch (Exception e){
+                Log.e(TAG, "No tiene foto de perfil", e);
+            }
+
 
         }
     }
@@ -340,7 +353,9 @@ public class NavigationDrawerFragment extends Fragment
         }
 
         protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            if(result!=null) {
+                bmImage.setImageBitmap(result);
+            }
         }
         
     }

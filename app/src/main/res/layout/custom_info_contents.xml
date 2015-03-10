@@ -39,17 +39,4 @@
             style="@style/foodRatingBar" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/button_review"
-        android:layout_width="match_parent"
-        android:src="@drawable/abc_ic_go_search_api_holo_light"
-        android:layout_height="match_parent"
-        android:text="@string/button_review"
-        android:baselineAlignBottom="false"
-        android:adjustViewBounds="false"
-        android:duplicateParentState="false"
-        android:contentDescription=""
-        android:clickable="true"
-        android:background="@color/bg_color" />
-
 </LinearLayout>

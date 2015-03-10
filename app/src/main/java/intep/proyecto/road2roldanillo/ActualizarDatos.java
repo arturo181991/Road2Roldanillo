@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.util.rest.ActualizarCategorias;
