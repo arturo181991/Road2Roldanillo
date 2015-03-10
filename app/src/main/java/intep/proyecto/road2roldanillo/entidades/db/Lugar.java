@@ -135,11 +135,16 @@ public class Lugar extends TablaEntidadHelper{
     }
 
     public static List<Lugar> getAllValuesByCategoria(SQLiteDatabase db, Categoria categoria){
-//        String[] args = new String[]{categoria.getId()+""};
-//        Log.i(Lugar.class.getSimpleName(),"");
-//        Cursor c = db.query(Lugar.class.getSimpleName(),null,"categoria=?",args,null,null,null);
-        Cursor c = db.query(Lugar.class.getSimpleName(),null,null,null,null,null,null);
-        return DBHelper.selectAll(Lugar.class, c);
+        String[] args = new String[]{categoria.getId()+""};
+        String sql = "SELECT * FROM ".concat(Lugar.class.getSimpleName()).concat(" WHERE categoria = "+categoria.getId());
+        Log.i(Lugar.class.getSimpleName(),sql);
+        Cursor c = db.rawQuery(sql,null);
+        List<Lugar> lugares = DBHelper.selectAll(Lugar.class, c);
+        for (int i = 0 ; i < lugares.size() ; i++){
+            lugares.get(i).setCategoria(categoria);
+            lugares.get(i).setFotos(Foto.getAllValuesByLugar(db,lugares.get(i)));
+        }
+        return lugares;
     }
 
 }

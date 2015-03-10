@@ -34,7 +34,6 @@ import java.util.Map;
 import intep.proyecto.road2roldanillo.MainActivity;
 import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.TabbedActivity;
-import intep.proyecto.road2roldanillo.entidades.Site;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
@@ -45,12 +44,7 @@ import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 public class MapHelper {
 
 
-
-    private static final String KEY_RESTAURANT = "SHOWRESTAURANTS";
-    private static final String KEY_HERE = "YOURHERE";
-    private static final String KEY_HOTEL = "SHOWHOTELS";
-    private static final String KEY_ALL = "SHOWALL";
-
+    private static final String TAG = MapHelper.class.getSimpleName();
     public static final String KEY_SITE = "SITE";
     public static final String KEY_MY_LOCATION = "MY_LOCATION";
 
@@ -154,27 +148,42 @@ public class MapHelper {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        List<Lugar> listadoLugares = Lugar.getAllValuesByCategoria(db,categoria);
 
-        for (Lugar lugar : Lugar.getAllValuesByCategoria(db,categoria)) {
+        Log.i(TAG,"Cantidad de Lugares a mostrar: "+listadoLugares.size());
 
-            if(categoria!=null && categoria!=lugar.getCategoria()){
+        Log.i(TAG,"Mostrando lugares de la categoria: "+categoria.getId());
+
+        for (Lugar lugar : listadoLugares) {
+
+            Log.i(TAG,"Procesando el lugar: "+lugar.getNombre()+" Categoria: "+lugar.getCategoria().toString());
+
+            if(categoria!=null && categoria.getId()!=lugar.getCategoria().getId()){
                 continue;
             }
+
+            Log.i(TAG,"Paso por el proceso de verificacion de categoria");
 
             MarkerOptions markerOption = new MarkerOptions().title(lugar.getNombre())
                     .position(new LatLng(lugar.getLatitud(), lugar.getLongitud()))
                     .snippet(lugar.getDescripcion());
 
+            Log.i(TAG,"Se crear el markeroption");
+
             Bitmap bm = lugar.getCategoria().getIconoBitMap(context);
             if(bm==null){
+                Log.i(TAG,"Se crea el icono por defecto del marcador");
                 markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.me));
             }else{
+                Log.i(TAG,"Se crea el icono desde el bitmap de la categoria");
                 markerOption.icon(BitmapDescriptorFactory.fromBitmap(bm));
             }
 
-
             Marker marker = map.addMarker(markerOption);
+            Log.i(TAG,"Se agrega el marcador al mapa");
+
             lugares.put(marker,lugar);
+            Log.i(TAG,"Se agrega el marcador al hashmap");
 
         }
 

@@ -2,7 +2,7 @@
 <resources>
     <string name="title_activity_update">Actualizar Datos</string>
     <string name="title_findme">Encuéntrame</string>
-    <string name="title_login">Iniciar Sesión</string>
+    <string name="title_login">Road2Roldanillo</string>
     <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,5 +14,6 @@
     <string name="texto_bienvenida">Sabías que con Road2Roldanillo, tienes acceso a gran cantidad de sitios de Roldanillo Valle del Cauca. Si inicias sesión, podrás hacer comentarios y calificar los sitios según tu experiencia</string>
     <string name="sabias_que">Sabías que...</string>
     <string name="actualizar_datos">Actualizar Datos</string>
+    <string name="descripcion_imagen_descripcion">Imagen Descripcion</string>
 
 </resources>

@@ -56,7 +56,10 @@ public class ActualizarLugares extends AsyncTask<String,Void,Boolean> {
                     try {
                         JSONArray fotosArray = jsonArray.getJSONObject(i).getJSONArray("fotos");
                         List<Foto> fotos = RESTHelper.getListadoEntidades(Foto.class,fotosArray);
+                        Log.i(TAG,"Fotos para el lugar: ".concat(entidad.getNombre())
+                                    .concat(" => "+fotos));
                         if(fotos!=null && !fotos.isEmpty()) {
+                            Log.i(TAG,"Cantidad de fotos: "+fotos.size());
                             if (!ImageHelper.saveImageForLugar(entidad.getNombre(), fotos, context)) {
                                 entidades = null;
                                 return false;
@@ -106,10 +109,13 @@ public class ActualizarLugares extends AsyncTask<String,Void,Boolean> {
                 db.beginTransaction();
                 try {
                     lugar.insert(db);
+                    Log.i(TAG,"Se inserta el Lugar: ".concat(lugar.getNombre()));
                     if(lugar.getFotos()!=null) {
+                        Log.i(TAG,"El lugar tiene fotos: "+lugar.getFotos().size());
                         for (Foto foto : lugar.getFotos()) {
                             foto.setLugar(lugar);
                             foto.insert(db);
+                            Log.i(TAG,"Se inserta la foto: ".concat(foto.getFoto()));
                         }
                     }
                     db.setTransactionSuccessful();

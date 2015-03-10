@@ -47,7 +47,7 @@ public class CategoriaDrawerListAdapter extends ArrayAdapter<Categoria> {
             ImageView imageView = (ImageView) v.findViewById(R.id.iconMenu);
 
             if (sw != null) {
-                sw.setText(categoria.toString());
+                sw.setText(categoria.getNombre());
             }
 
             if (imageView != null) {

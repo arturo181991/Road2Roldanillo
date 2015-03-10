@@ -99,22 +99,23 @@ public class ImageHelper {
 
             String url = Constantes.concatPath(Constantes.BASE_PATH,Constantes.LUGARES_IMAGES_PATH,foto.getFoto());
 
-            Log.i(TAG, "URL para la imagen del lugar: ".concat(foto.getLugar().getNombre())
-                    .concat(" ===> ").concat(url));
+
             Bitmap bitmap = getBitmapFromURL(url);
             if(bitmap==null){
                 Log.w(TAG,"No se encontró la imagen para el lugar");
                 return false;
             }else{
+                String name = "lugar_"+i+"_".concat(nombreLugar);
+                fotos.get(i).setFoto(name);
                 imagenes[i] = bitmap;
             }
         }
 
         for(int i=0; i<imagenes.length; i++){
 
-            String name = "lugar_"+i+"_".concat(nombreLugar);
-            Log.i(TAG,"Nombre de la imagen: ".concat(name));
-            if(!saveImageToInternalStorage(name,imagenes[i],context)){
+
+            Log.i(TAG,"Nombre de la imagen: ".concat(fotos.get(i).getFoto()));
+            if(!saveImageToInternalStorage(fotos.get(i).getFoto(),imagenes[i],context)){
                 Log.i(TAG,"No se pudo guardar una de las imagenes");
                 return false;
             }
@@ -154,6 +155,11 @@ public class ImageHelper {
             Log.e(TAG,"Error obteniendo la imagen desde la memoria interna", ex);
         }
         return image;
+    }
+
+    public static Bitmap getImageForFoto(Foto foto, Context context){
+        Bitmap bitmap = loadImageFromInternalStorage(foto.getFoto(),context);
+        return bitmap;
     }
 
     public static Bitmap getImageForCategoria(Categoria categoria, Context context){

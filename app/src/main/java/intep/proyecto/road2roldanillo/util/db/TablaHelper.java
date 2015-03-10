@@ -24,6 +24,14 @@ public class TablaHelper implements Serializable {
         Field[] fields = this.getClass().getDeclaredFields();
         ContentValues values = new ContentValues();
 
+        try {
+            TablaEntidadHelper ob = (TablaEntidadHelper) this;
+            values.put("id",ob.getId());
+            Log.i(TAG,"El valor del id es: "+ob.getId());
+        }catch (Exception e){
+            Log.i(TAG,"La clase no hereda de TablaEntidadHelper",e);
+        }
+
         for (Field field : fields) {
 
             if(field.getModifiers()!= Modifier.PROTECTED){

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.util.Constantes;
+import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
@@ -88,7 +89,7 @@ public class RESTHelper {
                 Log.i(TAG,"Se obtienen los campos de la clase: ".concat(subClass.getSimpleName()));
 
                 int id = dato.getInt("id");
-                T entity=newInstance(subClass,dato);
+                T entity= ReflectionHelper.newInstance(subClass, id);
 
                 if(entity==null){
                     entity = subClass.newInstance();
@@ -108,10 +109,15 @@ public class RESTHelper {
                             value = new Double(dato.getDouble(field.getName())).floatValue();
                         } else if (typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")) {
                             value = dato.getInt(field.getName());
-                        } else if (field.getType().isAssignableFrom(TablaEntidadHelper.class)) {
-                            value = dato.getInt(field.getName());
-                            Class<T> c = (Class<T>) Class.forName(field.getType().getName());
-                            value = newInstance(c, id);
+                        } else if (field.getType().getSuperclass().equals(TablaEntidadHelper.class)) {
+                            try {
+                                value = dato.getInt(field.getName());
+                                Class<T> c = (Class<T>) Class.forName(field.getType().getName());
+                                value = ReflectionHelper.newInstance(c, (Integer) value);
+                            }catch (Exception e){
+
+                            }
+
                         }
 
                         Method method = entity.obtainSetMethod(field);
@@ -137,33 +143,7 @@ public class RESTHelper {
         }
     }
 
-    private static <T extends TablaHelper> T newInstance(Class<T> subClass, JSONObject dato) throws JSONException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor constructor = getIdConstructor(subClass);
-        if(constructor==null){
-            return null;
-        }
-        T entity = (T) constructor.newInstance(dato.getInt("id"));
-        Log.i(TAG,"Se instancia el objecto usando ID");
-        return entity;
-    }
 
-    private static <T extends TablaHelper> T newInstance(Class<T> subClass, int id) throws JSONException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor constructor = getIdConstructor(subClass);
-        if(constructor==null){
-            return null;
-        }
-        T entity = (T) constructor.newInstance(id);
-        Log.i(TAG,"Se instancia el objecto usando ID");
-        return entity;
-    }
 
-    private static <T extends TablaHelper> Constructor getIdConstructor(Class<T> subClass){
-        for (Constructor constructor : subClass.getConstructors()) {
-            if(constructor.getParameterTypes().length==1 && constructor.getParameterTypes()[0].equals(int.class)){
-                return constructor;
-            }
-        }
-        return null;
-    }
 
 }

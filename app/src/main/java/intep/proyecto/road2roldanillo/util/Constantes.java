@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 public class Constantes {
 
-    public static final String BASE_PATH = "http://192.168.1.7:8080/Road2RoldanilloWS";
+    public static final String BASE_PATH = "http://192.168.1.13:8080/Road2RoldanilloWS";
 
     public static final String CATEGORIAS_PATH = "datos/categoria/get";
     public static final String CATEGORIAS_IMAGES_PATH = "ImageServlet/#/categoria/#";

@@ -18,30 +18,9 @@
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:id="@+id/layoutImagenes">
 
-            <ImageView
-                android:layout_width="320dp"
-                android:layout_height="fill_parent"
-                android:id="@+id/imageView"
-                android:src="@drawable/imagen1"
-                android:scaleType="centerCrop" />
-
-            <ImageView
-                android:layout_width="320dp"
-                android:layout_height="fill_parent"
-                android:id="@+id/imageView2"
-                android:src="@drawable/imagen2"
-                android:layout_weight="1"
-                android:scaleType="centerCrop" />
-
-            <ImageView
-                android:layout_width="320dp"
-                android:layout_height="fill_parent"
-                android:id="@+id/imageView3"
-                android:src="@drawable/imagen3"
-                android:layout_weight="1"
-                android:scaleType="centerCrop" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -57,6 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textViewNombre" />
 
@@ -77,6 +57,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textViewDireccion" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:textColorLink="#B61111"
+            android:id="@+id/textViewTelefono" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:textColorLink="#B61111"
+            android:id="@+id/textViewWeb" />
 
     </LinearLayout>
 </LinearLayout>

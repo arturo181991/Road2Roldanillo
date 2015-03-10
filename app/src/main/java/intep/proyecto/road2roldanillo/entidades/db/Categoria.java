@@ -62,7 +62,7 @@ public class Categoria extends TablaEntidadHelper {
 
     @Override
     public String toString() {
-        return nombre;
+        return getId()+"";
     }
 
     public static List<Categoria> getAllValues(SQLiteDatabase db){

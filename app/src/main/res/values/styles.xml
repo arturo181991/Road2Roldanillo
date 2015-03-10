@@ -32,5 +32,12 @@
         <item name="android:background">@color/bg_lugares</item>
     </style>
 
+    <style name="estilo_imagen_descripcion">
+        <item name="android:layout_weight">1</item>
+        <item name="android:width">320dp</item>
+        <item name="android:scaleType">centerCrop</item>
+
+    </style>
+
 
 </resources>

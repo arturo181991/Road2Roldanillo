@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -16,13 +15,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import intep.proyecto.road2roldanillo.entidades.Site;
+import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 
 
@@ -31,7 +29,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
-    private Site site;
+    private Lugar lugar;
     private LatLng miUbicacion;
 
     @Override
@@ -77,8 +75,8 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         Intent intent = getIntent();
 
         if(intent.hasExtra(MapHelper.KEY_SITE)){
-            site = (Site) intent.getSerializableExtra(MapHelper.KEY_SITE);
-            actionBar.setTitle(site.getNombres());
+            lugar = (Lugar) intent.getSerializableExtra(MapHelper.KEY_SITE);
+            actionBar.setTitle(lugar.getNombre());
         }else{
             finish();
         }
@@ -122,8 +120,8 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
     private void obtenerRuta() {
         String url = "http://maps.google.com/maps?saddr="+miUbicacion.latitude
                 +","+miUbicacion.longitude
-                +"&daddr="+site.getLatitud()
-                +","+site.getLongitud()
+                +"&daddr="+lugar.getLatitud()
+                +","+lugar.getLongitud()
                 +"&mode=walking";
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
@@ -165,7 +163,7 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
         public Fragment getItem(int position) {
 
             if(position==0){
-                return DescripcionFragment.newInstance(site);
+                return DescripcionFragment.newInstance(lugar);
             }else{
                 return PlaceholderFragment.newInstance(position + 1);
             }

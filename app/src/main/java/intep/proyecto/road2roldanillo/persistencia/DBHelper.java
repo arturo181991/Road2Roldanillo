@@ -19,6 +19,7 @@ import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.entidades.db.LugarUsuario;
 import intep.proyecto.road2roldanillo.entidades.db.UltimaActualizacion;
 import intep.proyecto.road2roldanillo.entidades.db.Usuario;
+import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
@@ -26,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "road2roldanillo.sqlite";
 
-    private static final int DB_SCHEME_VERSION = 27;
+    private static final int DB_SCHEME_VERSION = 42;
 
     private final Class[] classes;
 
@@ -152,7 +153,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         if(constructor.getParameterTypes().length==1 && constructor.getParameterTypes()[0].equals(int.class)){
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
                             entity = (T) constructor.newInstance(id);
-                            Log.i(TAG,"Se instancia el objecto usando ID");
+                            Log.i(TAG,"Se instancia el objecto usando ID: "+id);
                             break;
                         }
                     }
@@ -175,6 +176,15 @@ public class DBHelper extends SQLiteOpenHelper {
                             value = new Double(cursor.getDouble(columnIndex)).floatValue();
                         }else if(typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")){
                             value = cursor.getInt(columnIndex);
+                        } else {
+                            try {
+                                value = cursor.getInt(columnIndex);
+                                Class<T> c = (Class<T>) Class.forName(field.getType().getName());
+                                value = ReflectionHelper.newInstance(c, (Integer) value);
+                            } catch (Exception e){
+
+                            }
+
                         }
 
                         Method method = entity.obtainSetMethod(field);
@@ -193,7 +203,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 } while(cursor.moveToNext());
 
-                Log.i(TAG,"Se obtuvieron "+entities.size()+" entidades desde el JSONArray");
+                Log.i(TAG, "Se obtuvieron " + entities.size() + " entidades desde el JSONArray");
 
                 return entities;
 
