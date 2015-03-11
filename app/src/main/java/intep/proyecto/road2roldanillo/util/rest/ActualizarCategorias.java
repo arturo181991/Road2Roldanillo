@@ -34,12 +34,10 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     private ActualizarDatos context;
     private LinearLayout linearLayout;
-    private Class subClass;
 
-    public<T extends TablaHelper> ActualizarCategorias(ActualizarDatos context, LinearLayout linearLayout, Class<T> subClass){
+    public<T extends TablaHelper> ActualizarCategorias(ActualizarDatos context, LinearLayout linearLayout){
         this.context = context;
         this.linearLayout = linearLayout;
-        this.subClass = subClass;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
         if(jsonArray!=null && jsonArray.length()>0){
 
-            entidades = RESTHelper.getListadoEntidades(subClass,jsonArray);
+            entidades = RESTHelper.getListadoEntidades(Categoria.class,jsonArray);
 
             if(entidades!=null && !entidades.isEmpty()){
 
@@ -95,6 +93,9 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
 
         }
+
+        ActualizarLugares actualizarLugares = new ActualizarLugares(context, linearLayout);
+        actualizarLugares.execute();
 
     }
 

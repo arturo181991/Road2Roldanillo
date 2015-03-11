@@ -254,20 +254,12 @@ public class NavigationDrawerFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
+//            inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
@@ -303,13 +295,15 @@ public class NavigationDrawerFragment extends Fragment
             try {
                 new LoadProfileImage(imageCover).execute(person.getCover().getCoverPhoto().getUrl());
             }catch (Exception e){
-                Log.e(TAG,"No tiene imagen de portada",e);
+                Log.w(TAG,"No tiene imagen de portada");
+//                Log.e(TAG,"No tiene imagen de portada",e);
             }
 
             try {
                 new LoadProfileImage(imagePerfil).execute(person.getImage().getUrl());
             }catch (Exception e){
-                Log.e(TAG, "No tiene foto de perfil", e);
+                Log.w(TAG,"No tiene foto de perfil");
+//                Log.e(TAG, "No tiene foto de perfil", e);
             }
 
 

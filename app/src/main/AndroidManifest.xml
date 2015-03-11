@@ -24,6 +24,9 @@
             android:name=".TabbedActivity"
             android:label="@string/title_activity_tabbed"
             android:logo="@drawable/ic_header" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="intep.proyecto.road2roldanillo.MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"
@@ -32,6 +35,9 @@
         <activity
             android:name=".ActualizarDatos"
             android:label="@string/title_activity_update" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="intep.proyecto.road2roldanillo.MainActivity" />
         </activity>
         <activity
             android:name=".LoginGooglePlus"
