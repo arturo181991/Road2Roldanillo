@@ -57,7 +57,7 @@ public class ImageHelper {
         Bitmap[] imagenes = new Bitmap[SIZE.values().length];
         for (int i = 0; i<SIZE.values().length; i++){
             SIZE size = SIZE.values()[i];
-            String url = Constantes.concatPath(Constantes.BASE_PATH,Constantes.CATEGORIAS_IMAGES_PATH);
+            String url = Constantes.concatPath(Constantes.getBASE_PATH(),Constantes.CATEGORIAS_IMAGES_PATH);
             String[] parts = url.split("#");
             url = parts[0].concat(size.toString()).concat(parts[1]).concat(categoria.getIcono());
             Log.i(TAG,"URL para la imagen para la categoria: ".concat(categoria.getNombre()
@@ -97,7 +97,7 @@ public class ImageHelper {
         for (int i = 0; i<fotos.size(); i++){
             Foto foto = fotos.get(i);
 
-            String url = Constantes.concatPath(Constantes.BASE_PATH,Constantes.LUGARES_IMAGES_PATH,foto.getFoto());
+            String url = Constantes.concatPath(Constantes.getBASE_PATH(),Constantes.LUGARES_IMAGES_PATH,foto.getFoto());
 
 
             Bitmap bitmap = getBitmapFromURL(url);

@@ -53,7 +53,7 @@ public class RESTHelper {
 
     public static JSONArray getJSONCategorias(){
         String url = Constantes.concatPath(
-                Constantes.BASE_PATH,
+                Constantes.getBASE_PATH(),
                 Constantes.CATEGORIAS_PATH,
                 Constantes.getTimeStampAsString());
         Log.i(TAG,"Se generó la URL para obtener los datos JSON de las categorias");
@@ -62,7 +62,7 @@ public class RESTHelper {
 
     public static JSONArray getJSONLugares(){
         String url = Constantes.concatPath(
-                Constantes.BASE_PATH,
+                Constantes.getBASE_PATH(),
                 Constantes.LUGARES_PATH,
                 Constantes.getTimeStampAsString());
         Log.i(TAG,"Se generó la URL para obtener los datos JSON de los lugares");

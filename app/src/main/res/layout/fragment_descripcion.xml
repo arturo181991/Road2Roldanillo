@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context="intep.proyecto.road2roldanillo.TabbedActivity$PlaceholderFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="2">
 
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
         android:id="@+id/horizontalScrollView"
-        android:layout_weight="1"
+        style="@style/estilo_imagenes"
         android:fillViewport="true"
         android:scrollbars="none"
         android:measureAllChildren="false">
@@ -29,14 +29,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        style="@style/estilo_descripcion"
         android:dividerPadding="0dp"
         android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/textViewNombre" />
 

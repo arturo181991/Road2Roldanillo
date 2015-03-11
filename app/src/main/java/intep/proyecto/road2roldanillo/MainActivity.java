@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 import intep.proyecto.road2roldanillo.preferences.SettingsActivity;
+import intep.proyecto.road2roldanillo.util.Constantes;
 
 
 public class MainActivity extends ActionBarActivity
@@ -36,6 +37,8 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        cargarPreferencias();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -50,6 +53,12 @@ public class MainActivity extends ActionBarActivity
 
         setUpMapIfNeeded();
         encuentrameInicial();
+
+    }
+
+    private void cargarPreferencias() {
+
+        Constantes.load(this);
 
     }
 

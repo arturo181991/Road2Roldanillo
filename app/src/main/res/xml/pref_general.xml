@@ -2,7 +2,7 @@
 
 
     <EditTextPreference
-        android:key="base_path"
+        android:key="@string/key_base_path"
         android:title="@string/pref_title_basepath_name"
         android:defaultValue="@string/pref_default_basepath_name"
         android:selectAllOnFocus="true"
