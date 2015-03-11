@@ -1,14 +1,10 @@
 package intep.proyecto.road2roldanillo.util.rest;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -16,11 +12,11 @@ import org.json.JSONArray;
 import java.util.List;
 
 import intep.proyecto.road2roldanillo.ActualizarDatos;
-import intep.proyecto.road2roldanillo.R;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.rest.ImageHelper;
 import intep.proyecto.road2roldanillo.rest.RESTHelper;
+import intep.proyecto.road2roldanillo.util.UIHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 
 /**
@@ -32,43 +28,53 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     private List entidades;
 
-    private ActualizarDatos context;
-    private LinearLayout linearLayout;
+    private ActualizarDatos actualizarDatos;
 
-    public<T extends TablaHelper> ActualizarCategorias(ActualizarDatos context, LinearLayout linearLayout){
-        this.context = context;
-        this.linearLayout = linearLayout;
+    public<T extends TablaHelper> ActualizarCategorias(ActualizarDatos actualizarDatos){
+        this.actualizarDatos = actualizarDatos;
     }
 
     @Override
     protected Boolean doInBackground(String... strings) {
 
-        JSONArray jsonArray = RESTHelper.getJSONCategorias();
+        actualizarDatos.setTextProgressDialog("Actualizando Categorias ...");
 
-        if(jsonArray!=null && jsonArray.length()>0){
+        try {
 
-            entidades = RESTHelper.getListadoEntidades(Categoria.class,jsonArray);
 
-            if(entidades!=null && !entidades.isEmpty()){
+            JSONArray jsonArray = RESTHelper.getJSONCategorias();
 
-                for (Object entidad : entidades){
-                    if(entidad instanceof Categoria){
-                        if(!ImageHelper.saveImageForCategoria((Categoria) entidad, context)){
-                            entidades = null;
-                            return false;
+            if (jsonArray != null && jsonArray.length() > 0) {
+
+                entidades = RESTHelper.getListadoEntidades(Categoria.class, jsonArray);
+
+                if (entidades != null && !entidades.isEmpty()) {
+
+                    for (Object entidad : entidades) {
+                        if (entidad instanceof Categoria) {
+                            if (!ImageHelper.saveImageForCategoria((Categoria) entidad, actualizarDatos)) {
+                                entidades = null;
+                                return false;
+                            }
                         }
                     }
+
+                } else {
+                    entidades = null;
+                    return false;
                 }
 
-            }else{
+                return true;
+            } else {
                 entidades = null;
                 return false;
             }
+        }catch (Exception e){
 
-            return true;
-        }else{
-            entidades = null;
+            Log.w(TAG,"Error obteniendo las categorias desde el servicio Web",e);
+
             return false;
+
         }
 
     }
@@ -78,24 +84,33 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
         if(aBoolean && entidades!=null) {
 
-            Toast.makeText(context, "Arreglo de categorias-> " + entidades.size(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(actualizarDatos, "Arreglo de categorias-> " + entidades.size(), Toast.LENGTH_SHORT).show();
 
-            DBHelper dbHelper = new DBHelper(context);
+            DBHelper dbHelper = new DBHelper(actualizarDatos);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             if(insertarRegistros(db, entidades)){
 
-                Toast.makeText(context,"Se insertaron las categorias",Toast.LENGTH_SHORT).show();
+                Toast.makeText(actualizarDatos,"Se insertaron las categorias",Toast.LENGTH_SHORT).show();
 
             }else{
-                Toast.makeText(context,"Error XD",Toast.LENGTH_LONG).show();
+                Toast.makeText(actualizarDatos,"Error XD",Toast.LENGTH_LONG).show();
             }
 
+            ActualizarLugares actualizarLugares = new ActualizarLugares(actualizarDatos);
+            actualizarLugares.execute();
+
+        }else{
+
+            String message = "No está disponible el servicio Web";
+            UIHelper.addLabelMessageToList(message, actualizarDatos,actualizarDatos.getLinearLayout());
+
+            actualizarDatos.hideProgressDialog();
 
         }
 
-        ActualizarLugares actualizarLugares = new ActualizarLugares(context, linearLayout);
-        actualizarLugares.execute();
+
+
 
     }
 
@@ -117,19 +132,8 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
             final int resultado = registros;
 
-            context.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    TextView etiqueta = (TextView) context.getLayoutInflater().inflate(R.layout.label_actualizado, null);
-                    etiqueta.setTextAppearance(context,R.style.fuente_label_actualizado_categorias);
-                    etiqueta.setText("Se insertaron "+resultado+" Categoria(s).");
-                    linearLayout.addView(etiqueta);
-
-                }
-            });
-
-
+            String message = "Se insertaron "+resultado+" Categoria(s).";
+            UIHelper.addLabelMessageToList(message, actualizarDatos, actualizarDatos.getLinearLayout());
 
             return true;
 
