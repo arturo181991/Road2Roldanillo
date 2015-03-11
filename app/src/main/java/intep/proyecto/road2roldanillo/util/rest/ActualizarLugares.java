@@ -91,12 +91,12 @@ public class ActualizarLugares extends AsyncTask<String,Void,Boolean> {
             if(insertarRegistros(db, entidades)){
                 Toast.makeText(actualizarDatos,"Se insertaron los lugares",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(actualizarDatos,"Error XD",Toast.LENGTH_LONG).show();
+                UIHelper.addLabelMessageToList("No actualizaron los Lugares, por favor vuelve a intentarlo.", actualizarDatos, actualizarDatos.getLinearLayout());
             }
 
         }else{
 
-            UIHelper.addLabelMessageToList("No se actualizaron los Lugares", actualizarDatos, actualizarDatos.getLinearLayout());
+            UIHelper.addLabelMessageToList("No se actualizaron los Lugares, por favor vuelve a intentarlo", actualizarDatos, actualizarDatos.getLinearLayout());
 
         }
 
@@ -113,14 +113,47 @@ public class ActualizarLugares extends AsyncTask<String,Void,Boolean> {
             for (Lugar lugar : entidades){
                 db.beginTransaction();
                 try {
-                    lugar.insert(db);
-                    Log.i(TAG,"Se inserta el Lugar: ".concat(lugar.getNombre()));
+
+                    DBHelper.ACTION action;
+
+                    if(lugar.getBorrado()==1){
+                        action = DBHelper.ACTION.DELETE;
+                    }else if(lugar.existInDatabase(db)){
+                        action = DBHelper.ACTION.UPDATE;
+                    }else{
+                        action = DBHelper.ACTION.INSERT;
+                    }
+
+                    switch (action){
+                        case INSERT:
+                            lugar.insert(db);
+                            break;
+                        case UPDATE:
+                            lugar.update(db, lugar.getId());
+                            break;
+                        case DELETE:
+                            lugar.remove(db);
+                            break;
+                    }
+
+                    Log.i(TAG,"Se actualiza el Lugar: ".concat(lugar.getNombre()));
                     if(lugar.getFotos()!=null) {
                         Log.i(TAG,"El lugar tiene fotos: "+lugar.getFotos().size());
                         for (Foto foto : lugar.getFotos()) {
-                            foto.setLugar(lugar);
-                            foto.insert(db);
-                            Log.i(TAG,"Se inserta la foto: ".concat(foto.getFoto()));
+                            switch (action){
+                                case INSERT:
+                                    foto.setLugar(lugar);
+                                    foto.insert(db);
+                                    break;
+                                case UPDATE:
+                                    foto.setLugar(lugar);
+                                    foto.update(db,foto.getId());
+                                    break;
+                                case DELETE:
+                                    foto.remove(db);
+                            }
+
+                            Log.i(TAG,"Se actualiza la foto: ".concat(foto.getFoto()));
                         }
                     }
                     db.setTransactionSuccessful();
@@ -134,15 +167,15 @@ public class ActualizarLugares extends AsyncTask<String,Void,Boolean> {
 
             final int resultado = registros;
 
-            String message = "Se insertaron " + resultado + " Lugar(es).";
+            String message = "Se actualizaron " + resultado + " Lugar(es).";
             UIHelper.addLabelMessageToList(message, actualizarDatos, actualizarDatos.getLinearLayout());
-            Log.i(TAG,"Se insertaron "+registros+".");
+            Log.i(TAG,"Se actualizaron "+registros+".");
             return true;
 
         }catch (Exception e){
 
-            Toast.makeText(actualizarDatos,"Error insertando los lugares",Toast.LENGTH_SHORT);
-            Log.e(TAG,"Error insertando los lugares",e);
+            Toast.makeText(actualizarDatos, "Error actualizando los lugares", Toast.LENGTH_SHORT);
+            Log.e(TAG, "Error actualizando los lugares", e);
             return false;
 
         }

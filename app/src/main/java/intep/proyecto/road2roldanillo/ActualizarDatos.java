@@ -17,8 +17,6 @@ public class ActualizarDatos extends ActionBarActivity {
     private LinearLayout linearLayout;
     private ProgressDialog progressDialog;
 
-    private static final String TAG = "Categorias Activity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +28,20 @@ public class ActualizarDatos extends ActionBarActivity {
 
     public void getCategorias(){
 
-        linearLayout.removeAllViews();
+        limpiarLinearLayout();
         progressDialog = ProgressDialog.show(this,
                  "Sonríe mientras esperas ...", "Descargando Vitaminas ...",true,true);
 
         ActualizarCategorias actualizarCategorias = new ActualizarCategorias(this);
         actualizarCategorias.execute();
+
+    }
+
+    private void limpiarLinearLayout() {
+
+        while (linearLayout.getChildCount()>1){
+            linearLayout.removeViewAt(1);
+        }
 
     }
 

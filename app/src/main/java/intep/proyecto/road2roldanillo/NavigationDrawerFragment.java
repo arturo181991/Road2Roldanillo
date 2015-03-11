@@ -260,6 +260,14 @@ public class NavigationDrawerFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();

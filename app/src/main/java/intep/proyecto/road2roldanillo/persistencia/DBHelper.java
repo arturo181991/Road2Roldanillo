@@ -33,6 +33,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = DBHelper.class.getName();
 
+    public enum ACTION{
+        INSERT,
+        UPDATE,
+        DELETE;
+    }
+
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_SCHEME_VERSION);
         Log.i(TAG, "Se instancia ".concat(TAG).concat(", y se carga el arreglo de clases"));

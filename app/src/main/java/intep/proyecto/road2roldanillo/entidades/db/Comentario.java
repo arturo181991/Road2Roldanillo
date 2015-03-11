@@ -11,20 +11,26 @@ import intep.proyecto.road2roldanillo.util.db.TablaHelper;
 public class Comentario extends TablaEntidadHelper{
 
     private String detalle;
-    private Lugar lugar;
-    private Usuario usuario;
     private Date fecha;
     private int puntaje;
-    private int subido;
+    private int lugar;
+    private String usuario;
+    private String usuarioNombre;
+    private int borrado;
 
-    public Comentario(int id,String detalle, Lugar lugar, Usuario usuario, Date fecha, int puntaje, int subido) {
+    public Comentario(int id){
+        super(id);
+    }
+
+    public Comentario(int id, String detalle, Date fecha, int puntaje, int lugar, String usuario, String usuarioNombre, int borrado) {
         super(id);
         this.detalle = detalle;
-        this.lugar = lugar;
-        this.usuario = usuario;
         this.fecha = fecha;
         this.puntaje = puntaje;
-        this.subido = subido;
+        this.lugar = lugar;
+        this.usuario = usuario;
+        this.usuarioNombre = usuarioNombre;
+        this.borrado = borrado;
     }
 
     public String getDetalle() {
@@ -33,22 +39,6 @@ public class Comentario extends TablaEntidadHelper{
 
     public void setDetalle(String detalle) {
         this.detalle = detalle;
-    }
-
-    public Lugar getLugar() {
-        return lugar;
-    }
-
-    public void setLugar(Lugar lugar) {
-        this.lugar = lugar;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Date getFecha() {
@@ -67,11 +57,35 @@ public class Comentario extends TablaEntidadHelper{
         this.puntaje = puntaje;
     }
 
-    public int getSubido() {
-        return subido;
+    public int getLugar() {
+        return lugar;
     }
 
-    public void setSubido(int subido) {
-        this.subido = subido;
+    public void setLugar(int lugar) {
+        this.lugar = lugar;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getUsuarioNombre() {
+        return usuarioNombre;
+    }
+
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
+    }
+
+    public int getBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(int borrado) {
+        this.borrado = borrado;
     }
 }

@@ -20,10 +20,6 @@ import intep.proyecto.road2roldanillo.rest.ImageHelper;
  */
 public class CategoriaDrawerListAdapter extends ArrayAdapter<Categoria> {
 
-    public CategoriaDrawerListAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
     public CategoriaDrawerListAdapter(Context context, int resource, List<Categoria> items) {
         super(context, resource, items);
     }

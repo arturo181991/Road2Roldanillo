@@ -38,7 +38,43 @@ public class TablaEntidadHelper extends TablaHelper{
                 .concat("[")
                 .concat(id.toString())
                 .concat("]"));
-        return db.insert(this.getClass().getSimpleName(),null,getContent());
+        return db.insert(this.getClass().getSimpleName(), null, getContent());
+    }
+
+    public int update(SQLiteDatabase db, Integer oldId){
+        Log.i(super.TAG, "Ejecutando método UPDATE a la entidad "
+                .concat(this.getClass().getSimpleName())
+                .concat("[")
+                .concat(id.toString())
+                .concat("]"));
+        String params[] = new String[]{oldId.toString()};
+        return db.update(this.getClass().getSimpleName(),getContent(),"id = ?",params);
+    }
+
+    public int remove(SQLiteDatabase db){
+        Log.i(super.TAG, "Ejecutando método DELETE a la entidad "
+                .concat(this.getClass().getSimpleName())
+                .concat("[")
+                .concat(id.toString())
+                .concat("]"));
+        String params[] = new String[]{id.toString()};
+        return db.delete(this.getClass().getSimpleName(), "id = ?", params);
+    }
+
+    public boolean existInDatabase(SQLiteDatabase db){
+        Log.i(super.TAG, "Verificando si la entidad "
+                .concat(this.getClass().getSimpleName())
+                .concat("[")
+                .concat(id.toString())
+                .concat("] existe en la base de datos."));
+        try {
+            String params[] = new String[]{id.toString()};
+            Cursor c = db.query(this.getClass().getSimpleName(), null, "id = ?", params, null, null, null, null);
+            return c.getCount()==1;
+        }catch (Exception e){
+            Log.e(TAG,"Error verificando si existe la entidad",e);
+            return false;
+        }
     }
 
     protected static <T extends TablaHelper> List<T> getAllValues(String tableName, Class<T> subclass, SQLiteDatabase db){

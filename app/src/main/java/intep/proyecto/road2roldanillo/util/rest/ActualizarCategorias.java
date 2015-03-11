@@ -84,17 +84,17 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
         if(aBoolean && entidades!=null) {
 
-            Toast.makeText(actualizarDatos, "Arreglo de categorias-> " + entidades.size(), Toast.LENGTH_SHORT).show();
-
             DBHelper dbHelper = new DBHelper(actualizarDatos);
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             if(insertarRegistros(db, entidades)){
 
-                Toast.makeText(actualizarDatos,"Se insertaron las categorias",Toast.LENGTH_SHORT).show();
+                Toast.makeText(actualizarDatos,"Se actualizaron las categorias, por favor vuelve a intentarlo",Toast.LENGTH_SHORT).show();
 
             }else{
-                Toast.makeText(actualizarDatos,"Error XD",Toast.LENGTH_LONG).show();
+
+                UIHelper.addLabelMessageToList("No se actualizaron las Categorias, por favor vuelve a intentarlo", actualizarDatos, actualizarDatos.getLinearLayout());
+
             }
 
             ActualizarLugares actualizarLugares = new ActualizarLugares(actualizarDatos);
@@ -114,25 +114,34 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
     }
 
-    private boolean insertarRegistros(SQLiteDatabase db, List entidades) {
+    private boolean insertarRegistros(SQLiteDatabase db, List<Categoria> categorias) {
 
         try {
 
             int registros = 0;
 
-            for (Object entidad: entidades){
-                if(entidad instanceof TablaHelper){
-                    if(((TablaHelper)entidad).insert(db)!=-1){
+            for (Categoria categoria: categorias){
+                if(categoria instanceof TablaHelper){
+
+                    if(categoria.getBorrado()==1) {
+                        if (categoria.remove(db) == 1) {
+                            registros++;
+                        }
+                    }else if(categoria.existInDatabase(db)){
+                        if(categoria.update(db,categoria.getId())!=-1){
+                            registros++;
+                        }
+                    }else if(categoria.insert(db)!=-1){
                         registros++;
                     }
                 }
             }
 
-            Log.i(TAG,"Se insertaron "+registros+".");
+            Log.i(TAG,"Se actualizaron "+registros+" registros.");
 
             final int resultado = registros;
 
-            String message = "Se insertaron "+resultado+" Categoria(s).";
+            String message = "Se actualizaron "+resultado+" Categoria(s).";
             UIHelper.addLabelMessageToList(message, actualizarDatos, actualizarDatos.getLinearLayout());
 
             return true;
