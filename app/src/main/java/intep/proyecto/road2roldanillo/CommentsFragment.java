@@ -13,6 +13,8 @@ import intep.proyecto.road2roldanillo.map.MapHelper;
 
 public class CommentsFragment extends Fragment {
 
+    private Lugar lugar;
+
     public static CommentsFragment newInstance(Lugar lugar) {
         CommentsFragment fragment = new CommentsFragment();
         Bundle args = new Bundle();
@@ -29,8 +31,7 @@ public class CommentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            lugar = (Lugar) getArguments().getSerializable(MapHelper.KEY_SITE);
         }
     }
 
