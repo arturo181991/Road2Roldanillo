@@ -94,7 +94,7 @@ public class ActualizarComentarios extends AsyncTask<String,Void,Boolean> {
 
             }else{
 
-                Toast.makeText(activity,"No se actualizaron las Categorias, por favor vuelve a intentarlo",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"No se actualizaron los comentarios, por favor vuelve a intentarlo",Toast.LENGTH_SHORT).show();
 
             }
 
@@ -120,16 +120,22 @@ public class ActualizarComentarios extends AsyncTask<String,Void,Boolean> {
 
             for (Comentario comentario: comentarios){
 
+                Log.i(TAG,"Comentario recibido JSON: "+comentario.getId());
 
                     if(comentario.getBorrado()==1) {
+                        Log.i(TAG,"Comentario marcado para ser borrado");
                         if (comentario.remove(db) == 1) {
+                            Log.i(TAG, "Comentario eliminado");
                             registros++;
                         }
-                    }else if(comentario.existInDatabase(db)){
+                    }else if(Comentario.find(db,comentario.getId())!=null){
+                        Log.i(TAG,"Comentario existe en base de datos");
                         if(comentario.update(db,comentario.getId())!=-1){
+                            Log.i(TAG,"Comentario actualizado");
                             registros++;
                         }
-                    }else if(comentario.insert(db)!=-1){
+                    }else if(comentario.insert(db,true)!=-1){
+                        Log.i(TAG,"Comentario insertado");
                         registros++;
                     }
                 }
@@ -138,7 +144,7 @@ public class ActualizarComentarios extends AsyncTask<String,Void,Boolean> {
 
             final int resultado = registros;
 
-            final String message = "Se actualizaron "+resultado+" Categoria(s).";
+            final String message = "Se actualizaron "+resultado+" Comentario(s).";
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

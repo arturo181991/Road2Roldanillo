@@ -1,6 +1,7 @@
 package intep.proyecto.road2roldanillo;
 
 
+import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,6 +30,8 @@ import intep.proyecto.road2roldanillo.entidades.db.Comentario;
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
+import intep.proyecto.road2roldanillo.rest.PushComentarioHelper;
+import intep.proyecto.road2roldanillo.util.ComentarioDrawerListAdapter;
 import intep.proyecto.road2roldanillo.util.rest.ActualizarComentarios;
 
 
@@ -89,7 +92,7 @@ public class CommentsFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comments, container, false);
-        swipeRefreshLayout = (SwipeRefreshLayout) view;
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -114,10 +117,19 @@ public class CommentsFragment extends Fragment
 
         });
 
+        updateCommentList();
+
         return view;
     }
 
+
+
     public void updateCommentList(){
+
+        Log.i(TAG,"Se actualiza el adaptador para el listView");
+        ComentarioDrawerListAdapter adapter = new ComentarioDrawerListAdapter(getActivity(),lugar);
+        Log.i(TAG,"Se van a mostrar "+adapter.getCount()+" comentario(s)");
+        listView.setAdapter(adapter);
 
     }
 
@@ -141,6 +153,7 @@ public class CommentsFragment extends Fragment
 
             Comentario comentario = new Comentario(0);
             comentario.setBorrado(0);
+            comentario.setSubido(0);
             comentario.setDetalle(textoComentario);
             comentario.setFecha(Calendar.getInstance().getTime());
             comentario.setLugar(lugar.getId());
@@ -150,12 +163,14 @@ public class CommentsFragment extends Fragment
 
             SQLiteDatabase db = new DBHelper(getActivity()).getWritableDatabase();
 
-            comentario.insert(db);
+            comentario.insert(db,false);
 
             Toast.makeText(getActivity(),"Se guardo tu comentario",Toast.LENGTH_SHORT).show();
 
             campoComentario.setText("");
             campoRatingComentario.setRating(3);
+
+            new PushComentarioHelper().enviarComentarios(getActivity());
 
         }catch (Exception e){
             Toast.makeText(getActivity(),"No pudimos guardar tu comentario, intenta de nuevo",Toast.LENGTH_SHORT).show();

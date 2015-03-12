@@ -21,18 +21,24 @@ public class TablaHelper implements Serializable {
     protected final String TAG = this.getClass().getSimpleName();
 
     public ContentValues getContent(){
+        return getContent(true);
+    }
+
+    public ContentValues getContent(boolean todos){
 
         Log.i(TAG,"Se obtiene el contenido de la entidad ".concat(this.getClass().getSimpleName()));
 
         Field[] fields = this.getClass().getDeclaredFields();
         ContentValues values = new ContentValues();
 
-        try {
-            TablaEntidadHelper ob = (TablaEntidadHelper) this;
-            values.put("id",ob.getId());
-            Log.i(TAG,"El valor del id es: "+ob.getId());
-        }catch (Exception e){
-            Log.i(TAG,"La clase no hereda de TablaEntidadHelper",e);
+        if(todos) {
+            try {
+                TablaEntidadHelper ob = (TablaEntidadHelper) this;
+                values.put("id", ob.getId());
+                Log.i(TAG, "El valor del id es: " + ob.getId());
+            } catch (Exception e) {
+                Log.i(TAG, "La clase no hereda de TablaEntidadHelper", e);
+            }
         }
 
         for (Field field : fields) {

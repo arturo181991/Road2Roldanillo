@@ -21,6 +21,7 @@ import java.util.List;
 
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.util.Constantes;
+import intep.proyecto.road2roldanillo.util.DateHelper;
 import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
@@ -82,6 +83,15 @@ public class RESTHelper {
         return array;
     }
 
+    public static String getURLPutComments(){
+        String url = Constantes.concatPath(
+                Constantes.getBASE_PATH(),
+                Constantes.PUT_COMENTARIOS_PATH
+        );
+        Log.i(TAG,"Se generó la URL para ENVIAR COMENTARIOS");
+        return url;
+    }
+
 
     public static <T extends TablaHelper> List<T> getListadoEntidades(Class<T> subClass, JSONArray jsonArray){
         try {
@@ -114,6 +124,8 @@ public class RESTHelper {
                         String typeName = field.getType().getSimpleName();
                         if (typeName.equals("String")) {
                             value = dato.getString(field.getName());
+                        } else if (typeName.equalsIgnoreCase("date")) {
+                            value = DateHelper.getDateFormatJSON().parse(dato.getString(field.getName()));
                         } else if (typeName.equalsIgnoreCase("double")) {
                             value = dato.getDouble(field.getName());
                         } else if (typeName.equalsIgnoreCase("float")) {

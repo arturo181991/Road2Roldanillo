@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.map.MapHelper;
+import intep.proyecto.road2roldanillo.util.rest.ActualizarComentarios;
 
 
 public class TabbedActivity extends Activity implements ActionBar.TabListener {
@@ -85,8 +86,16 @@ public class TabbedActivity extends Activity implements ActionBar.TabListener {
             miUbicacion = (LatLng) intent.getParcelableExtra(MapHelper.KEY_MY_LOCATION);
         }
 
+        actualizarComentarios();
+
     }
 
+    private void actualizarComentarios() {
+
+        ActualizarComentarios actualizarComentarios = new ActualizarComentarios(lugar,this);
+        actualizarComentarios.execute();
+
+    }
 
 
     @Override

@@ -12,5 +12,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/botonListar"
-        android:text="@string/actualizar_datos" />
+        android:text="@string/actualizar_datos"
+        style="@style/button_text" />
 </LinearLayout>

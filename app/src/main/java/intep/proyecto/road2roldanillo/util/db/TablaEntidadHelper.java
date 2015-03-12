@@ -48,7 +48,7 @@ public class TablaEntidadHelper extends TablaHelper{
                 .concat(id.toString())
                 .concat("]"));
         String params[] = new String[]{oldId.toString()};
-        return db.update(this.getClass().getSimpleName(),getContent(),"id = ?",params);
+        return db.update(this.getClass().getSimpleName(), getContent(), "id = ?", params);
     }
 
     public int remove(SQLiteDatabase db){
@@ -79,6 +79,16 @@ public class TablaEntidadHelper extends TablaHelper{
 
     protected static <T extends TablaHelper> List<T> getAllValues(String tableName, Class<T> subclass, SQLiteDatabase db){
         Cursor c = db.query(tableName, null, null, null, null, null, null);
+        return DBHelper.selectAll(subclass, c);
+    }
+
+    protected static <T extends TablaHelper> List<T> getValues(String tableName,
+                                                               Class<T> subclass,
+                                                               SQLiteDatabase db,
+                                                               String where,
+                                                               String[] params,
+                                                               String orderBy){
+        Cursor c = db.query(tableName, null, where, params, null, null, orderBy);
         return DBHelper.selectAll(subclass, c);
     }
 }

@@ -22,6 +22,7 @@ import com.google.android.gms.plus.PlusClient;
 import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 import intep.proyecto.road2roldanillo.preferences.SettingsActivity;
+import intep.proyecto.road2roldanillo.rest.PushComentarioHelper;
 import intep.proyecto.road2roldanillo.util.Constantes;
 
 
@@ -64,6 +65,14 @@ public class MainActivity extends ActionBarActivity
         encuentrameInicial();
 
         setUpGooglePlusClient();
+
+        sincronizarComentarios();
+
+    }
+
+    private void sincronizarComentarios() {
+
+        new PushComentarioHelper().enviarComentarios(this);
 
     }
 

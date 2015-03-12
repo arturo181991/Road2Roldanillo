@@ -11,4 +11,8 @@ public class DateHelper {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
+    public static SimpleDateFormat getDateFormatJSON(){
+        return new SimpleDateFormat("MMM d, yyyy h:mm:ss a");
+    }
+
 }

@@ -43,6 +43,7 @@ import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 import intep.proyecto.road2roldanillo.persistencia.DBHelper;
 import intep.proyecto.road2roldanillo.util.CategoriaDrawerListAdapter;
+import intep.proyecto.road2roldanillo.util.LoadProfileImage;
 
 public class NavigationDrawerFragment extends Fragment
         implements GooglePlayServicesClient.ConnectionCallbacks,
@@ -334,32 +335,6 @@ public class NavigationDrawerFragment extends Fragment
         plusClient.disconnect();
     }
 
-    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
 
-        public LoadProfileImage(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            if(result!=null) {
-                bmImage.setImageBitmap(result);
-            }
-        }
-        
-    }
 
 }
