@@ -17,5 +17,7 @@
     <string name="sabias_que">Sabías que...</string>
     <string name="actualizar_datos">Actualizar Datos</string>
     <string name="descripcion_imagen_descripcion">Imagen Descripcion</string>
+    <string name="add_comment">Agregar Comentario</string>
+    <string name="text_add_comment">Déjanos tu opinión</string>
 
 </resources>

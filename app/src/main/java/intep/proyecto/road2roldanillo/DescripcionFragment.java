@@ -1,5 +1,6 @@
 package intep.proyecto.road2roldanillo;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,7 @@ import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.map.MapHelper;
 
 
-public class DescripcionFragment extends TabbedActivity.PlaceholderFragment {
+public class DescripcionFragment extends Fragment {
 
     private LinearLayout linearLayout;
     private Lugar site;
