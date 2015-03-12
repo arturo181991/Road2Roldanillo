@@ -31,7 +31,8 @@
         android:layout_height="0dp"
         style="@style/estilo_descripcion"
         android:dividerPadding="0dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:padding="30dp">
 
         <TextView
             android:layout_width="wrap_content"
