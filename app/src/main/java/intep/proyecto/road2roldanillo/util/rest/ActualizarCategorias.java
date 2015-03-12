@@ -89,7 +89,7 @@ public class ActualizarCategorias extends AsyncTask<String,Void,Boolean> {
 
             if(insertarRegistros(db, entidades)){
 
-                Toast.makeText(actualizarDatos,"Se actualizaron las categorias, por favor vuelve a intentarlo",Toast.LENGTH_SHORT).show();
+                Toast.makeText(actualizarDatos,"Se actualizaron las categorias",Toast.LENGTH_SHORT).show();
 
             }else{
 

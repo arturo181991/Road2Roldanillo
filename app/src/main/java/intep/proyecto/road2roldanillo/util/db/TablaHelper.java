@@ -9,6 +9,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Date;
+
+import intep.proyecto.road2roldanillo.util.DateHelper;
 
 /**
  * Created by gurzaf on 1/7/15.
@@ -49,9 +52,14 @@ public class TablaHelper implements Serializable {
 
                 if(value!=null){
 
-                    Log.i(TAG,"El valor es: ".concat(value.toString()));
+                    Log.i(TAG, "El valor es: ".concat(value.toString()));
 
-                    values.put(field.getName(),value.toString());
+                    if(value instanceof Date){
+                        values.put(field.getName(), DateHelper.getDateFormat().format((Date)value));
+                    }else{
+                        values.put(field.getName(),value.toString());
+                    }
+
                 }else{
                     Log.i(TAG,"No hay valor");
                 }

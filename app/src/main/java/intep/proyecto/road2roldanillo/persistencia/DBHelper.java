@@ -17,6 +17,7 @@ import intep.proyecto.road2roldanillo.entidades.db.Comentario;
 import intep.proyecto.road2roldanillo.entidades.db.Foto;
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.entidades.db.UltimaActualizacion;
+import intep.proyecto.road2roldanillo.util.DateHelper;
 import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
@@ -25,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "road2roldanillo.sqlite";
 
-    private static final int DB_SCHEME_VERSION = 44;
+    private static final int DB_SCHEME_VERSION = 45;
 
     private final Class[] classes;
 
@@ -100,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Class superClass = clase.getSuperclass();
             if(superClass!=null){
                 if(superClass.getSimpleName().equalsIgnoreCase(TablaEntidadHelper.class.getSimpleName())){
-                    sql += "id INTEGER PRIMARY KEY , ";
+                    sql += "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , ";
                 }
             }
 
@@ -174,6 +175,8 @@ public class DBHelper extends SQLiteOpenHelper {
                             value = cursor.getString(columnIndex);
                         }else if(typeName.equalsIgnoreCase("double")){
                             value = cursor.getDouble(columnIndex);
+                        }else if(typeName.equalsIgnoreCase("date")){
+                            value = DateHelper.getDateFormat().parse(cursor.getString(columnIndex));
                         }else if(typeName.equalsIgnoreCase("float")){
                             value = new Double(cursor.getDouble(columnIndex)).floatValue();
                         }else if(typeName.equalsIgnoreCase("int") || typeName.equalsIgnoreCase("integer")){

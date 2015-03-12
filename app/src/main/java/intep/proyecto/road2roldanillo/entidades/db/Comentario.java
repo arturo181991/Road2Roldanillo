@@ -1,5 +1,7 @@
 package intep.proyecto.road2roldanillo.entidades.db;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.Date;
 
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
@@ -88,4 +90,5 @@ public class Comentario extends TablaEntidadHelper{
     public void setBorrado(int borrado) {
         this.borrado = borrado;
     }
+
 }

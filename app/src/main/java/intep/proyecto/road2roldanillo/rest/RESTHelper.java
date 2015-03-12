@@ -19,6 +19,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import intep.proyecto.road2roldanillo.entidades.db.Lugar;
 import intep.proyecto.road2roldanillo.util.Constantes;
 import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
@@ -49,6 +50,16 @@ public class RESTHelper {
             Log.e(TAG, "Ocurrió un error obteniendo los datos JSON desde la URL", exc);
         }
         return null;
+    }
+
+    public static JSONArray getJSONComentarios(Lugar lugar){
+        String url = Constantes.concatPath(
+                Constantes.getBASE_PATH(),
+                Constantes.COMENTARIOS_PATH,
+                lugar.getId()+"",
+                Constantes.getTimeStampAsString());
+        Log.i(TAG,"Se generó la URL para obtener los datos JSON de los comentarios");
+        return getObjects(url);
     }
 
     public static JSONArray getJSONCategorias(){

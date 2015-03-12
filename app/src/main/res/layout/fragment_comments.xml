@@ -10,64 +10,73 @@ tools:context="intep.proyecto.road2roldanillo.CommentsFragment"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_add_comment"
-            android:id="@+id/textView"
-            android:padding="5dp"
-            style="@style/fuente_label_actualizado" />
-
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:id="@+id/layoutComentario"
+            android:visibility="gone">
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:inputType="textMultiLine"
-                android:layout_gravity="top|left" />
+                android:text="@string/text_add_comment"
+                android:id="@+id/textView"
+                android:padding="5dp"
+                style="@style/fuente_label_actualizado" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="2">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/campoComentario"
+                    android:inputType="textMultiLine"
+                    android:layout_gravity="top|left"
+                    android:visibility="visible" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="center">
+                    android:weightSum="2">
 
-                    <RatingBar
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:layout_gravity="center">
+
+                        <RatingBar
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/campoRatingLugar"
+                            style="@style/ratingComment"
+                            android:numStars="5"
+                            android:layout_centerInParent="true"
+                            android:rating="3"
+                            android:stepSize="1" />
+                    </RelativeLayout>
+
+                    <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ratingBar2"
-                        style="@style/ratingComment"
-                        android:numStars="5"
-                        android:layout_centerInParent="true"
-                        android:rating="3"
-                        android:stepSize="1" />
-                </RelativeLayout>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_comment"
-                    android:id="@+id/button"
-                    android:layout_weight="1.5"
-                    style="@style/button_text" />
+                        android:text="@string/add_comment"
+                        android:id="@+id/botonAgregarComentario"
+                        android:layout_weight="1.5"
+                        style="@style/button_text" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/listView" />
+            android:id="@+id/listViewComments" />
 
     </LinearLayout>
     

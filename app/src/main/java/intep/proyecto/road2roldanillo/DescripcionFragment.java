@@ -57,11 +57,6 @@ public class DescripcionFragment extends Fragment {
                 linearLayout.addView(imageView);
             }
         }
-        /*ImageView imageView = (ImageView) inflater.inflate(R.layout.imagen_descripcion, null);
-        imageView.setImageResource(R.drawable.imagen1);
-        imageView.setImageResource(R.drawable.imagen2);
-        imageView.setImageResource(R.drawable.imagen3);
-        linearLayout.addView(imageView);*/
 
         TextView textViewNombre = (TextView) view.findViewById(R.id.textViewNombre);
         textViewNombre.setText(site.getNombre());

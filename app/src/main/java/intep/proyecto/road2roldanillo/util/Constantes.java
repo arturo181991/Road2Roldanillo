@@ -20,6 +20,8 @@ public class Constantes {
     public static final String LUGARES_PATH = "datos/lugar/get";
     public static final String LUGARES_IMAGES_PATH = "ImageServlet/lugar";
 
+    public static final String COMENTARIOS_PATH = "datos/comentario/get";
+
     private static final String URL_SEPARATOR = "/";
 
     /**
