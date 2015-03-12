@@ -16,9 +16,7 @@ import intep.proyecto.road2roldanillo.entidades.db.Categoria;
 import intep.proyecto.road2roldanillo.entidades.db.Comentario;
 import intep.proyecto.road2roldanillo.entidades.db.Foto;
 import intep.proyecto.road2roldanillo.entidades.db.Lugar;
-import intep.proyecto.road2roldanillo.entidades.db.LugarUsuario;
 import intep.proyecto.road2roldanillo.entidades.db.UltimaActualizacion;
-import intep.proyecto.road2roldanillo.entidades.db.Usuario;
 import intep.proyecto.road2roldanillo.util.ReflectionHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaEntidadHelper;
 import intep.proyecto.road2roldanillo.util.db.TablaHelper;
@@ -45,10 +43,8 @@ public class DBHelper extends SQLiteOpenHelper {
         classes = new Class[]{
                 Categoria.class,
                 Lugar.class,
-                Usuario.class,
                 Comentario.class,
                 Foto.class,
-                LugarUsuario.class,
                 UltimaActualizacion.class
         };
     }
