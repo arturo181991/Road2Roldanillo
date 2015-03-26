@@ -54,6 +54,9 @@ public class ComentarioDrawerListAdapter extends ArrayAdapter<Comentario>
         clear();
 
         addAll(comentarios);
+
+        plusClient.connect();
+
     }
 
     @Override
