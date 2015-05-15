@@ -5,16 +5,16 @@ android {
         debug {
             keyAlias 'millave'
             keyPassword 'arturo'
-            storeFile file('/home/arturo/keystores/road2roldanillo.keystore')
+            storeFile file('C:/Users/CRISTIAN/keystore')
             storePassword 'arturo'
         }
     }
-    compileSdkVersion 19
-    buildToolsVersion '20.0.0'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId 'intep.proyecto.road2roldanillo'
         minSdkVersion 16
-        targetSdkVersion 19
+        targetSdkVersion 22
         versionCode 1
         versionName '1.0'
     }
@@ -37,7 +37,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.android.support:support-v13:20.0.0'
     compile 'com.google.android.gms:play-services:6.1.71'
 }
